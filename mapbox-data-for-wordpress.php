@@ -87,3 +87,25 @@ function map_data_point_location_build_meta_box( $post ){
 	<input type="text" name="location" value="<?php echo $mapDataPoint_Location; ?>" /> 
 	<?php
 }
+
+/**
+ * Store custom field meta box data
+ *
+ * @param int $post_id The post ID.
+ */
+function map_data_point_save_meta_boxes_data( $post_id ){
+	if ( !isset( $_POST['map_data_point_meta_box_nonce'] ) || !wp_verify_nonce( $_POST['map_data_point_meta_box_nonce'], basename( __FILE__ ) ) ){
+		return;
+	}
+	// Check the user's permissions.
+	if ( ! current_user_can( 'edit_post', $post_id ) ){
+		return;
+	}
+	if ( isset( $_REQUEST['year'] ) ) {
+		update_post_meta( $post_id, '_map_data_point_year', sanitize_text_field( $_POST['year'] ) );
+	}
+	if ( isset( $_REQUEST['location'] ) ) {
+		update_post_meta( $post_id, '_map_data_point_location', sanitize_text_field($_POST['location'] ) );
+	}
+}
+add_action( 'save_post_map_data_point', 'map_data_point_save_meta_boxes_data', 10, 2 );
