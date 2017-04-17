@@ -45,10 +45,10 @@ function mapbox_data_init() {
 		'Hierarchical'			=> false,
 		'menu_position'			=> 5,
 		'show_in_rest'			=> true,
+		'taxonomies'			=> array('category', 'post_tag'),
 		'supports'				=> array( 
 			'title', 
-			'editor', 
-			'author', 
+			'editor',  
 			'thumbnail',  
 			'revisions' )
 	);
