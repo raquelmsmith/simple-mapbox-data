@@ -39,16 +39,18 @@ function mapbox_data_init() {
 		'show_ui'				=> true,
 		'show_in_menu'			=> true,
 		'query_var'				=> true,
-		'rewrite'				=> array( 'slug' => 'map' ),
+		'rewrite'				=> array( 'slug' => 'map-data' ),
 		'capability_type'		=> 'post',
 		'has_archive'			=> true,
 		'Hierarchical'			=> false,
+		'menu_icon'				=> 'dashicons-location-alt',
 		'menu_position'			=> 5,
 		'show_in_rest'			=> true,
 		'taxonomies'			=> array('category', 'post_tag'),
 		'supports'				=> array( 
 			'title', 
-			'editor',  
+			'editor',
+			'author',
 			'thumbnail',  
 			'revisions' )
 	);
