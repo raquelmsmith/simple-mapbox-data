@@ -74,7 +74,7 @@ add_action( 'add_meta_boxes_map_data_point', 'map_data_point_add_meta_boxes' );
  */
 function map_data_point_year_build_meta_box( $post ){
 	wp_nonce_field( basename( __FILE__ ), 'map_data_point_meta_box_nonce' );
-	$mapDataPoint_Year = get_post_meta( $post->ID, '_map_data_point_year' );
+	$mapDataPoint_Year = get_post_meta( $post->ID, '_map_data_point_year', true );
 	?>
 	<input type="text" name="year" value="<?php echo $mapDataPoint_Year; ?>" /> 
 	<?php
@@ -82,7 +82,7 @@ function map_data_point_year_build_meta_box( $post ){
 
 function map_data_point_location_build_meta_box( $post ){
 	wp_nonce_field( basename( __FILE__ ), 'map_data_point_meta_box_nonce' );
-	$mapDataPoint_Location = get_post_meta( $post->ID, '_map_data_point_location' );
+	$mapDataPoint_Location = get_post_meta( $post->ID, '_map_data_point_location', true );
 	?>
 	<input type="text" name="location" value="<?php echo $mapDataPoint_Location; ?>" /> 
 	<?php
