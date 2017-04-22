@@ -3,7 +3,7 @@
 	Plugin Name: Mapbox Data for WordPress
 	Plugin URI: TBD
 	Description: A plugin to manage Mapbox data in a WordPress install
-	Version: 0.0.0
+	Version: 0.0.1
 	Author: Raquel M Smith
 	Author URI: http://raquelmsmith.com
 	License: GPL2
