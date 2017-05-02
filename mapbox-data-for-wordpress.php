@@ -136,6 +136,16 @@ function mapbox_data_settings_page() {
 }
 
 /**
+ * Link to styles for the admin settings page
+ *
+ */
+
+function mapbox_data_styles() {
+	wp_enqueue_style( 'mapbox_data_styles', plugins_url( 'mapbox-data-for-wordpress/inc/style.css' ) );
+}
+add_action( 'admin_head', 'mapbox_data_styles' );
+
+/**
  * Create custom endpoint for REST API
  *
  */
