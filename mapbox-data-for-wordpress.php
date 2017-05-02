@@ -111,3 +111,62 @@ function map_data_point_save_meta_boxes_data( $post_id ){
 	}
 }
 add_action( 'save_post_map_data_point', 'map_data_point_save_meta_boxes_data', 10, 2 );
+
+/**
+ * Add a link to the settings page in the admin menu
+ * under Settings -> Mapbox Data
+ *
+ */
+
+function mapbox_data_settings_menu() {
+	add_options_page( 
+		'Mapbox Data for WordPress', 
+		'Mapbox Data', 'manage_options', 
+		'mapbox-data-for-wordpress', 
+		'mapbox_data_settings_page'
+	);
+}
+add_action( 'admin_menu', 'mapbox_data_settings_menu' );
+
+function mapbox_data_settings_page() {
+	if( !current_user_can( 'manage_options' ) ) {
+		wp_die( 'You do not have sufficient permissions to access this page.' );
+	}
+	require( 'inc/options-page-wrapper.php' );
+}
+
+/**
+ * Create custom endpoint for REST API
+ *
+ */
+
+function get_map_data_REST($thePostId) {
+	$postInfo = get_post($thePostId);
+	return $postInfo -> $post_title;
+}
+
+//Example...
+
+function get_data_point( $data ) {
+  $postInfo = get_post($data);
+  $author = $postInfo->post_author;
+  return $postInfo;
+}
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'mdfw/v1', '/map-data-point/(?P<id>\d+)', array(
+    'methods' => 'GET',
+    'callback' => 'get_data_point',
+  ) );
+} );
+
+
+
+
+
+
+
+
+
+
+
