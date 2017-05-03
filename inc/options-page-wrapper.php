@@ -16,6 +16,39 @@
 
 					<div class="postbox">
 
+						<h2><span><?php esc_attr_e( 'Mapbox Info', 'wp_admin_style' ); ?></span></h2>
+
+						<div class="inside">
+							<p><?php esc_attr_e(
+									'We need this info to send data to your Mapbox account.',
+									'wp_admin_style'
+								); ?></p>
+							<form name="mdfw_mapbox_info_form" method="post" action="">
+								<input type="hidden" name="mdfw_form_submitted" value="Y">
+								<table class="form-table">
+									<tr>
+										<td scope="row">
+											<label for="tablecell"><?php esc_attr_e('Mapbox Access Token', 'wp_admin_style'); ?></label>
+										</td>
+										<td>
+											<input type="text" name="mapbox_access_token" value="<?php echo $mapbox_access_token; ?>" class="regular-text" />
+										</td>
+									</tr>
+								</table>
+								<p>
+									<?php submit_button(
+										'Save', $type = 'primary', $name = 'mdfw-settings-submit', $wrap = FALSE, $other_attributes = NULL
+									); ?>
+								</p>
+							</form>
+						</div>
+						<!-- .inside -->
+
+					</div>
+					<!-- .postbox -->
+
+					<div class="postbox">
+
 						<h2><span><?php esc_attr_e( 'Custom Fields', 'wp_admin_style' ); ?></span></h2>
 
 						<div class="inside">

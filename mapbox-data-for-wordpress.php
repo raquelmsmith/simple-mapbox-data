@@ -12,6 +12,14 @@
 add_action( 'init', 'mapbox_data_init' );
 
 /**
+	* Assign Global Variables.
+	*
+*/
+
+$plugin_url = WP_PLUGIN_URL . '/mapbox-data-for-wordpress';
+$options = array();
+
+/**
 	* Register a Map Data post type.
 */
 
@@ -132,6 +140,27 @@ function mapbox_data_settings_page() {
 	if( !current_user_can( 'manage_options' ) ) {
 		wp_die( 'You do not have sufficient permissions to access this page.' );
 	}
+
+	global $plugin_url;
+	global $options;
+
+	if( isset( $_POST['mdfw_form_submitted'] ) ) {
+		$hidden_field = esc_html( $_POST['mdfw_form_submitted'] );
+		if ( $hidden_field == 'Y' ) {
+			$mapbox_access_token = $_POST['mapbox_access_token'];
+			$options['mapbox_access_token']	= $mapbox_access_token;
+			$options['last_updated']		= time();
+
+			update_option( 'mapbox_data', $options );
+		}
+
+	}
+
+	$options = get_option( 'mapbox_data' );
+	if( $options != '' ) {
+		$mapbox_access_token = $options[ 'mapbox_access_token' ];
+	}
+
 	require( 'inc/options-page-wrapper.php' );
 }
 
