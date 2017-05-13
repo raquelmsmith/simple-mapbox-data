@@ -147,8 +147,12 @@ function mapbox_data_settings_page() {
 	if( isset( $_POST['mdfw_form_submitted'] ) ) {
 		$hidden_field = esc_html( $_POST['mdfw_form_submitted'] );
 		if ( $hidden_field == 'Y' ) {
+			$mapbox_account_username = $_POST['mapbox_account_username'];
+			$options['mapbox_account_username']	= $mapbox_account_username;
 			$mapbox_access_token = $_POST['mapbox_access_token'];
 			$options['mapbox_access_token']	= $mapbox_access_token;
+			$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
+			$options['mapbox_dataset_id']	= $mapbox_dataset_id;
 			$options['last_updated']		= time();
 
 			update_option( 'mapbox_data', $options );
@@ -158,7 +162,10 @@ function mapbox_data_settings_page() {
 
 	$options = get_option( 'mapbox_data' );
 	if( $options != '' ) {
+		$mapbox_account_username = $options[ 'mapbox_account_username' ];
 		$mapbox_access_token = $options[ 'mapbox_access_token' ];
+		$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+		$last_updated = $options[ 'last_updated' ];
 	}
 
 	require( 'inc/options-page-wrapper.php' );

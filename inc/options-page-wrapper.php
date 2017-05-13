@@ -28,10 +28,26 @@
 								<table class="form-table">
 									<tr>
 										<td scope="row">
+											<label for="tablecell"><?php esc_attr_e('Mapbox Account Username', 'wp_admin_style'); ?></label>
+										</td>
+										<td>
+											<input type="text" name="mapbox_account_username" value="<?php echo $mapbox_account_username; ?>" class="regular-text" />
+										</td>
+									</tr>
+									<tr>
+										<td scope="row">
 											<label for="tablecell"><?php esc_attr_e('Mapbox Access Token', 'wp_admin_style'); ?></label>
 										</td>
 										<td>
 											<input type="text" name="mapbox_access_token" value="<?php echo $mapbox_access_token; ?>" class="regular-text" />
+										</td>
+									</tr>
+									<tr>
+										<td scope="row">
+											<label for="tablecell"><?php esc_attr_e('Mapbox Dataset ID', 'wp_admin_style'); ?></label>
+										</td>
+										<td>
+											<input type="text" name="mapbox_dataset_id" value="<?php echo $mapbox_dataset_id; ?>" class="regular-text" />
 										</td>
 									</tr>
 								</table>
