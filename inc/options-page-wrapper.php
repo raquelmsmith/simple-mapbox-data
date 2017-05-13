@@ -60,51 +60,30 @@
 										<th><?php esc_attr_e( 'Value Type', 'wp_admin_style' ); ?></th>
 										<th><?php esc_attr_e( 'Include in GeoJSON?', 'wp_admin_style' ); ?></th>
 									</tr>
-									<tr valign="top">
+
+									<?php 
+									for ($i=0; $i < $number_fields; $i++) { 
+										$field_name = 'mdfw_custom_field_' . $i;
+										$field_type = $field_name . '_type';
+										$field_json = $field_name . '_json';
+										?>
+										<tr valign="top">
+
 										<td scope="row">
-											<input type="text" name="mdfw_custom_field_0" value="<?php echo $mdfw_custom_field_0; ?>" class="regular-text" />
+											<input type="text" name="mdfw_custom_field_<?php echo $i; ?>" value="<?php echo $$field_name; ?>" class="regular-text" />
 										</td>
 										<td>
-											<select name="mdfw_custom_field_0_type" id="">
-												<option <?php if ( $mdfw_custom_field_0_type == 'number' ) { echo 'selected="selected"'; } ?> value="number">Number</option>
-												<option <?php if ( $mdfw_custom_field_0_type == 'string' ) { echo 'selected="selected"'; } ?> value="string">String</option>
-												<option <?php if ( $mdfw_custom_field_0_type == 'boolean' ) { echo 'selected="selected"'; } ?> value="boolean">Boolean</option>
+											<select name="<?php echo $field_type; ?>" id="">
+												<option <?php if ( $$field_type == 'number' ) { echo 'selected="selected"'; } ?> value="number">Number</option>
+												<option <?php if ( $$field_type == 'string' ) { echo 'selected="selected"'; } ?> value="string">String</option>
+												<option <?php if ( $$field_type == 'boolean' ) { echo 'selected="selected"'; } ?> value="boolean">Boolean</option>
 											</select>
 										</td>
 										<td>
-											<input type="checkbox" value="1" name="mdfw_custom_field_0_json" <?php checked( $mdfw_custom_field_0_json, '1', TRUE ); ?> />
+											<input type="checkbox" value="1" name="mdfw_custom_field_<?php echo $i; ?>_json" <?php checked( $$field_json, '1', TRUE ); ?> />
 										</td>
 									</tr>
-									<tr valign="top">
-										<td scope="row">
-											<input type="text" value="" class="regular-text" /><br>
-										</td>
-										<td>
-											<select name="" id="">
-												<option selected="selected" value="number">Number</option>
-												<option value="string">String</option>
-												<option value="string">Boolean</option>
-											</select>
-										</td>
-										<td>
-											<input type="checkbox" value="1" name="checkbox" <?php checked( $value, '1', TRUE ); ?> />
-										</td>
-									</tr>
-									<tr valign="top">
-										<td scope="row">
-											<input type="text" value="" class="regular-text" /><br>
-										</td>
-										<td>
-											<select name="" id="">
-												<option selected="selected" value="number">Number</option>
-												<option value="string">String</option>
-												<option value="string">Boolean</option>
-											</select>
-										</td>
-										<td>
-											<input type="checkbox" value="1" name="checkbox" <?php checked( $value, '1', TRUE ); ?> />
-										</td>
-									</tr>
+									<?php } ?>
 								</table>
 								<p>
 									<?php submit_button(

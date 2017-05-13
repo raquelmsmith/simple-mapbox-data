@@ -18,6 +18,7 @@ add_action( 'init', 'mapbox_data_init' );
 
 $plugin_url = WP_PLUGIN_URL . '/mapbox-data-for-wordpress';
 $options = array();
+$number_fields = 4;
 
 /**
 	* Register a Map Data post type.
@@ -143,6 +144,7 @@ function mapbox_data_settings_page() {
 
 	global $plugin_url;
 	global $options;
+	global $number_fields;
 
 	if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
 		$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
@@ -191,6 +193,7 @@ function mapbox_data_styles() {
 	wp_enqueue_style( 'mapbox_data_styles', plugins_url( 'mapbox-data-for-wordpress/inc/style.css' ) );
 }
 add_action( 'admin_head', 'mapbox_data_styles' );
+
 
 /**
  * Create custom endpoint for REST API
