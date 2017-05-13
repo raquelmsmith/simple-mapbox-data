@@ -18,7 +18,7 @@ add_action( 'init', 'mapbox_data_init' );
 
 $plugin_url = WP_PLUGIN_URL . '/mapbox-data-for-wordpress';
 $options = array();
-$number_fields = 4;
+$number_fields = 3;
 
 /**
 	* Register a Map Data post type.
@@ -146,6 +146,8 @@ function mapbox_data_settings_page() {
 	global $options;
 	global $number_fields;
 
+	//Write to the database
+
 	if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
 		$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
 		if ( $hidden_field == 'Y' ) {
@@ -155,13 +157,18 @@ function mapbox_data_settings_page() {
 			$options['mapbox_access_token']	= $mapbox_access_token;
 			$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
 			$options['mapbox_dataset_id']	= $mapbox_dataset_id;
-			if( '' != $_POST['mdfw_custom_field_0'] ) {
-				$mdfw_custom_field_0 = $_POST['mdfw_custom_field_0'];
-				$options['mdfw_custom_field_0']	= $mdfw_custom_field_0;
-				$mdfw_custom_field_0_type = $_POST['mdfw_custom_field_0_type'];
-				$options['mdfw_custom_field_0_type']	= $mdfw_custom_field_0_type;
-				$mdfw_custom_field_0_json = $_POST['mdfw_custom_field_0_json'];
-				$options['mdfw_custom_field_0_json']	= $mdfw_custom_field_0_json;
+			for ( $i = 0; $i < $number_fields; $i++ ) { 
+				$field_name = 'mdfw_custom_field_' . $i;
+				$field_type = $field_name . '_type';
+				$field_json = $field_name . '_json';
+				if( '' != $_POST[$field_name] ) {
+					$$field_name = $_POST[$field_name];
+					$options[$field_name]	= $$field_name;
+					$$field_type = $_POST[$field_type];
+					$options[$field_type]	= $$field_type;
+					$$field_json = $_POST[$field_json];
+					$options[$field_json]	= $$field_json;
+				}
 			}
 			$options['last_updated']		= time();
 
@@ -170,14 +177,22 @@ function mapbox_data_settings_page() {
 
 	}
 
+	// Get option values from the database
+
 	$options = get_option( 'mapbox_data' );
 	if( $options != '' ) {
 		$mapbox_account_username = $options[ 'mapbox_account_username' ];
 		$mapbox_access_token = $options[ 'mapbox_access_token' ];
 		$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
-		$mdfw_custom_field_0 = $options[ 'mdfw_custom_field_0' ];
-		$mdfw_custom_field_0_type = $options[ 'mdfw_custom_field_0_type' ];
-		$mdfw_custom_field_0_json = $options[ 'mdfw_custom_field_0_json' ];
+		for ( $i = 0; $i < $number_fields; $i++ ) { 
+			$field_name = 'mdfw_custom_field_' . $i;
+			$field_type = $field_name . '_type';
+			$field_json = $field_name . '_json';
+
+			$$field_name = $options[ $field_name ];
+			$$field_type = $options[ $field_type ];
+			$$field_json = $options[ $field_json ];
+		}
 		$last_updated = $options[ 'last_updated' ];
 	}
 
