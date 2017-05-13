@@ -144,8 +144,8 @@ function mapbox_data_settings_page() {
 	global $plugin_url;
 	global $options;
 
-	if( isset( $_POST['mdfw_form_submitted'] ) ) {
-		$hidden_field = esc_html( $_POST['mdfw_form_submitted'] );
+	if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
+		$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
 		if ( $hidden_field == 'Y' ) {
 			$mapbox_account_username = $_POST['mapbox_account_username'];
 			$options['mapbox_account_username']	= $mapbox_account_username;
@@ -153,6 +153,14 @@ function mapbox_data_settings_page() {
 			$options['mapbox_access_token']	= $mapbox_access_token;
 			$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
 			$options['mapbox_dataset_id']	= $mapbox_dataset_id;
+			if( '' != $_POST['mdfw_custom_field_0'] ) {
+				$mdfw_custom_field_0 = $_POST['mdfw_custom_field_0'];
+				$options['mdfw_custom_field_0']	= $mdfw_custom_field_0;
+				$mdfw_custom_field_0_type = $_POST['mdfw_custom_field_0_type'];
+				$options['mdfw_custom_field_0_type']	= $mdfw_custom_field_0_type;
+				$mdfw_custom_field_0_json = $_POST['mdfw_custom_field_0_json'];
+				$options['mdfw_custom_field_0_json']	= $mdfw_custom_field_0_json;
+			}
 			$options['last_updated']		= time();
 
 			update_option( 'mapbox_data', $options );
@@ -165,6 +173,9 @@ function mapbox_data_settings_page() {
 		$mapbox_account_username = $options[ 'mapbox_account_username' ];
 		$mapbox_access_token = $options[ 'mapbox_access_token' ];
 		$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+		$mdfw_custom_field_0 = $options[ 'mdfw_custom_field_0' ];
+		$mdfw_custom_field_0_type = $options[ 'mdfw_custom_field_0_type' ];
+		$mdfw_custom_field_0_json = $options[ 'mdfw_custom_field_0_json' ];
 		$last_updated = $options[ 'last_updated' ];
 	}
 

@@ -24,7 +24,7 @@
 									'wp_admin_style'
 								); ?></p>
 							<form name="mdfw_mapbox_info_form" method="post" action="">
-								<input type="hidden" name="mdfw_form_submitted" value="Y">
+								<input type="hidden" name="mdfw_mapbox_info_form_submitted" value="Y">
 								<table class="form-table">
 									<tr>
 										<td scope="row">
@@ -51,28 +51,9 @@
 										</td>
 									</tr>
 								</table>
-								<p>
-									<?php submit_button(
-										'Save', $type = 'primary', $name = 'mdfw-settings-submit', $wrap = FALSE, $other_attributes = NULL
-									); ?>
-								</p>
-							</form>
-						</div>
-						<!-- .inside -->
 
-					</div>
-					<!-- .postbox -->
+								<h2><span><?php esc_attr_e( 'Custom Fields', 'wp_admin_style' ); ?></span></h2>
 
-					<div class="postbox">
-
-						<h2><span><?php esc_attr_e( 'Custom Fields', 'wp_admin_style' ); ?></span></h2>
-
-						<div class="inside">
-							<p><?php esc_attr_e(
-									'Add custom fields here to include in the Mapbox data points.',
-									'wp_admin_style'
-								); ?></p>
-							<form method="post" action="">
 								<table class="form-table">
 									<tr>
 										<th class="row-title"><?php esc_attr_e( 'Value Name', 'wp_admin_style' ); ?></th>
@@ -81,17 +62,17 @@
 									</tr>
 									<tr valign="top">
 										<td scope="row">
-											<input type="text" value="Year" class="regular-text" />
+											<input type="text" name="mdfw_custom_field_0" value="<?php echo $mdfw_custom_field_0; ?>" class="regular-text" />
 										</td>
 										<td>
-											<select name="" id="">
-												<option selected="selected" value="number">Number</option>
-												<option value="string">String</option>
-												<option value="string">Boolean</option>
+											<select name="mdfw_custom_field_0_type" id="">
+												<option <?php if ( $mdfw_custom_field_0_type == 'number' ) { echo 'selected="selected"'; } ?> value="number">Number</option>
+												<option <?php if ( $mdfw_custom_field_0_type == 'string' ) { echo 'selected="selected"'; } ?> value="string">String</option>
+												<option <?php if ( $mdfw_custom_field_0_type == 'boolean' ) { echo 'selected="selected"'; } ?> value="boolean">Boolean</option>
 											</select>
 										</td>
 										<td>
-											<input type="checkbox" value="1" name="checkbox" <?php checked( $value, '1', TRUE ); ?> />
+											<input type="checkbox" value="1" name="mdfw_custom_field_0_json" <?php checked( $mdfw_custom_field_0_json, '1', TRUE ); ?> />
 										</td>
 									</tr>
 									<tr valign="top">
