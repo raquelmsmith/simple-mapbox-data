@@ -73,30 +73,102 @@ function mapbox_data_init() {
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/add_meta_boxes
  */
 function map_data_point_add_meta_boxes( $post ){
-	add_meta_box( 'map_data_point_year', 'Year', 'map_data_point_year_build_meta_box', 'map_data_point', 'side', 'low' );
-	add_meta_box( 'map_data_point_location', 'Location', 'map_data_point_location_build_meta_box', 'map_data_point', 'normal', 'low' );
+	add_meta_box( 
+		'map_data_point_meta_box', 
+		'Mapbox Custom Data', 
+		'map_data_point_build_meta_box', 
+		'map_data_point', 
+		'normal', 
+		'high'
+	);
 }
 add_action( 'add_meta_boxes_map_data_point', 'map_data_point_add_meta_boxes' );
 
+function create_custom_meta_fields_array() {
+	// Field Array Example
+	$prefix = 'mapbox_custom_data_';
+	$custom_meta_fields = array(
+	    array(
+	        'label' => 'Longitude',
+	        'desc'  => 'Enter the longitudinal coordinate here',
+	        'id'    => $prefix . 'longitude',
+	        'type'  => 'text'
+	    ),
+	    array(
+	        'label' => 'Latitude',
+	        'desc'  => 'Enter the latitudinal coordinate here',
+	        'id'    => $prefix . 'latitude',
+	        'type'  => 'text'
+	    ),
+	); 
+
+	$updated_custom_fields_options = get_option( 'mapbox_data' );
+	$updated_custom_fields = $updated_custom_fields_options['custom_fields'];
+
+	foreach ($updated_custom_fields as $field) {
+		$custom_meta_fields[] = array(
+			'label' => $field['name'],
+			'id'	=> $prefix . strtolower( $field['name'] ),
+			'type'	=> $field['type'],
+			'json'	=> $field['json']
+		);
+	}
+	return $custom_meta_fields;
+}
+
+
 /**
- * Build custom field meta boxes for Year and Location
+ * Build meta box to hold custom fields
  *
  * @param post $post The post object
  */
-function map_data_point_year_build_meta_box( $post ){
-	wp_nonce_field( basename( __FILE__ ), 'map_data_point_meta_box_nonce' );
-	$mapDataPoint_Year = get_post_meta( $post->ID, '_map_data_point_year', true );
-	?>
-	<input type="text" name="year" value="<?php echo $mapDataPoint_Year; ?>" /> 
-	<?php
-}
 
-function map_data_point_location_build_meta_box( $post ){
-	wp_nonce_field( basename( __FILE__ ), 'map_data_point_meta_box_nonce' );
-	$mapDataPoint_Location = get_post_meta( $post->ID, '_map_data_point_location', true );
-	?>
-	<input type="text" name="location" value="<?php echo $mapDataPoint_Location; ?>" /> 
-	<?php
+function map_data_point_build_meta_box( $post ) {
+	global $post;
+
+	$custom_meta_fields = create_custom_meta_fields_array();
+
+	// Use nonce for verification
+	echo '<input type="hidden" name="map_data_point_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
+     
+    // Begin the field table and loop
+    echo '<table class="form-table">';
+    foreach ($custom_meta_fields as $field) {
+        // get value of this field if it exists for this post
+        $meta = get_post_meta($post->ID, '_' . strtolower($field['id']), true);
+        // begin a table row with
+        echo '<tr>
+                <th><label for="'.$field['id'].'">'.$field['label'].'</label></th>
+                <td>';
+                switch($field['type']) {
+                    // case items will go here
+                    // text
+					case 'text':
+					    echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="30" />
+					        <br /><span class="description">'.$field['desc'].'</span>';
+						break;
+					// textarea
+					case 'textarea':
+					    echo '<textarea name="'.$field['id'].'" id="'.$field['id'].'" cols="60" rows="4">'.$meta.'</textarea>
+					        <br /><span class="description">'.$field['desc'].'</span>';
+						break;
+					// checkbox
+					case 'checkbox':
+					    echo '<input type="checkbox" name="'.$field['id'].'" id="'.$field['id'].'" ',$meta ? ' checked="checked"' : '','/>
+					        <label for="'.$field['id'].'">'.$field['desc'].'</label>';
+						break;
+					// select
+					case 'select':
+					    echo '<select name="'.$field['id'].'" id="'.$field['id'].'">';
+					    foreach ($field['options'] as $option) {
+					        echo '<option', $meta == $option['value'] ? ' selected="selected"' : '', ' value="'.$option['value'].'">'.$option['label'].'</option>';
+					    }
+					    echo '</select><br /><span class="description">'.$field['desc'].'</span>';
+						break;
+                } //end switch
+        echo '</td></tr>';
+    } // end foreach
+    echo '</table>'; // end table
 }
 
 /**
@@ -105,19 +177,29 @@ function map_data_point_location_build_meta_box( $post ){
  * @param int $post_id The post ID.
  */
 function map_data_point_save_meta_boxes_data( $post_id ){
+	$custom_meta_fields = create_custom_meta_fields_array();
+
 	if ( !isset( $_POST['map_data_point_meta_box_nonce'] ) || !wp_verify_nonce( $_POST['map_data_point_meta_box_nonce'], basename( __FILE__ ) ) ){
-		return;
+		return $post_id;
 	}
+	// check autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        return $post_id;
 	// Check the user's permissions.
 	if ( ! current_user_can( 'edit_post', $post_id ) ){
-		return;
+		return $post_id;
 	}
-	if ( isset( $_REQUEST['year'] ) ) {
-		update_post_meta( $post_id, '_map_data_point_year', sanitize_text_field( $_POST['year'] ) );
-	}
-	if ( isset( $_REQUEST['location'] ) ) {
-		update_post_meta( $post_id, '_map_data_point_location', sanitize_text_field($_POST['location'] ) );
-	}
+	// loop through fields and save the data
+    foreach ($custom_meta_fields as $field) {
+    	$fieldID = strtolower($field['id']);
+        $old = get_post_meta($post_id, '_' . $fieldID, true);
+        $new = $_POST[$fieldID];
+        if ($new && $new != $old) {
+            update_post_meta($post_id, '_' . $fieldID, $new);
+        } elseif ('' == $new && $old) {
+            delete_post_meta($post_id, '_' . $fieldID, $old);
+        }
+    } // end foreach
 }
 add_action( 'save_post_map_data_point', 'map_data_point_save_meta_boxes_data', 10, 2 );
 
@@ -157,10 +239,12 @@ function mapbox_data_settings_page() {
 			$options['mapbox_access_token']	= $mapbox_access_token;
 			$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
 			$options['mapbox_dataset_id']	= $mapbox_dataset_id;
+			$custom_fields = array();
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
 				$field_name = 'mdfw_custom_field_' . $i;
 				$field_type = $field_name . '_type';
 				$field_json = $field_name . '_json';
+
 				if( '' != $_POST[$field_name] ) {
 					$$field_name = $_POST[$field_name];
 					$options[$field_name]	= $$field_name;
@@ -168,9 +252,17 @@ function mapbox_data_settings_page() {
 					$options[$field_type]	= $$field_type;
 					$$field_json = $_POST[$field_json];
 					$options[$field_json]	= $$field_json;
+
+					//Save to custom fields array
+					$custom_fields[] = array(
+						'name'	=> $$field_name,
+				        'type'  => $$field_type,
+				        'json'	=> $$field_json,
+					);
 				}
 			}
-			$options['last_updated']		= time();
+			$options['last_updated'] = time();
+			$options['custom_fields'] = $custom_fields;
 
 			update_option( 'mapbox_data', $options );
 		}
