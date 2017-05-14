@@ -74,9 +74,10 @@
 										</td>
 										<td>
 											<select name="<?php echo $field_type; ?>" id="">
-												<option <?php if ( $$field_type == 'number' ) { echo 'selected="selected"'; } ?> value="number">Number</option>
-												<option <?php if ( $$field_type == 'string' ) { echo 'selected="selected"'; } ?> value="string">String</option>
-												<option <?php if ( $$field_type == 'boolean' ) { echo 'selected="selected"'; } ?> value="boolean">Boolean</option>
+												<option <?php if ( $$field_type == 'text' ) { echo 'selected="selected"'; } ?> value="text">Text</option>
+												<option <?php if ( $$field_type == 'textarea' ) { echo 'selected="selected"'; } ?> value="textarea">Textarea</option>
+												<option <?php if ( $$field_type == 'checkbox' ) { echo 'selected="selected"'; } ?> value="checkbox">Checkbox</option>
+												<option <?php if ( $$field_type == 'radio' ) { echo 'selected="selected"'; } ?> value="radio">Radio</option>
 											</select>
 										</td>
 										<td>
