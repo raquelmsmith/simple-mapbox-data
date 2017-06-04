@@ -74,6 +74,7 @@ class Mapbox_Data_For_Wordpress {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_options_hooks();
 		$this->define_public_hooks();
 
 	}
@@ -86,6 +87,7 @@ class Mapbox_Data_For_Wordpress {
 	 * - Mapbox_Data_For_Wordpress_Loader. Orchestrates the hooks of the plugin.
 	 * - Mapbox_Data_For_Wordpress_i18n. Defines internationalization functionality.
 	 * - Mapbox_Data_For_Wordpress_Admin. Defines all hooks for the admin area.
+	 * - Mapbox_Data_For_Wordpress_Options. Defines all hooks for the options page.
 	 * - Mapbox_Data_For_Wordpress_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
@@ -112,6 +114,11 @@ class Mapbox_Data_For_Wordpress {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mapbox-data-for-wordpress-admin.php';
+
+		/**
+		 * The class responsible for defining all actions that occur in the options page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mapbox-data-for-wordpress-options.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -156,8 +163,23 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'init', $plugin_admin, 'register_map_data_post_type' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_box' );
 		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
 		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
+	}
+
+	/**
+	 * Register all of the hooks related to the options page functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_options_hooks() {
+
+		$plugin_options = new Mapbox_Data_For_Wordpress_Options( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_menu', $plugin_options, 'mapbox_data_settings_menu' );
 	}
 
 	/**
