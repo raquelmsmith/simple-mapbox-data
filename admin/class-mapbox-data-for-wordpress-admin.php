@@ -229,6 +229,62 @@ class Mapbox_Data_For_Wordpress_Admin {
 	}
 
 	/**
+	 * Send the saved Map Data Point post info to Mapbox
+	 *
+	 */
+
+	public function send_data_to_mapbox( $post_id ) {
+		// prepare the data as json
+			// need: username, dataset ID, feature ID, access token
+		$options = get_option( 'mapbox_data' );
+		if( $options != '' ) {
+			$mapbox_account_username = $options[ 'mapbox_account_username' ];
+			$mapbox_access_token = $options[ 'mapbox_access_token' ];
+			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+		}
+		$post_meta_data = get_post_meta( $post_id );
+		$latitude = $post_meta_data['_mapbox_custom_data_latitude'];
+		$longitude = $post_meta_data['_mapbox_custom_data_longitude'];
+		$year = $post_meta_data['_mapbox_custom_data_year'][0];
+		$post_object = get_post( $post_id );
+		$title = $post_object->post_title;
+		$content = $post_object->post_content;
+		$url = 'https://api.mapbox.com/datasets/v1/' 
+			. $mapbox_account_username 
+			. '/' 
+			. $mapbox_dataset_id
+			. '/features/'
+			. $post_id
+			. '?access_token='
+			. $mapbox_access_token;
+		$geometry = array(
+			'type' 			=> 'Point',
+			'coordinates'	=> array( floatval($latitude[0]), floatval($longitude[0]) ),
+		);
+		$properties = array(
+			'title' => $title,
+			'content' => $content,
+			'year' => floatval($year),
+		);
+		$post_info = array(
+			'id'			=> strval($post_id),
+			'type'			=> 'Feature',
+			'geometry'		=> $geometry,
+			'properties' 	=> $properties,
+		);
+		$post_info = json_encode( $post_info );
+		//send PUT request to mapbox
+		$headers = array(
+			'content-type' => 'application/json',
+		);
+		$args = array(
+			'method' => 'PUT',
+			'headers' => $headers,
+			'body' => $post_info,
+
+		);
+		$response = wp_remote_post( $url, $args );
+	}
 	 * Add a link to the settings page in the admin menu
 	 * under Settings -> Mapbox Data
 	 *

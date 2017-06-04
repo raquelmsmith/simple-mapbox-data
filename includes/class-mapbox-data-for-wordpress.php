@@ -157,6 +157,7 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_box' );
 		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
+		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
 	}
 
 	/**
