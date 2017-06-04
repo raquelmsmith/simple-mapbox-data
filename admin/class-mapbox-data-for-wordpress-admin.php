@@ -285,6 +285,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 		);
 		$response = wp_remote_post( $url, $args );
 	}
+
+	/**
 	 * Add a link to the settings page in the admin menu
 	 * under Settings -> Mapbox Data
 	 *
