@@ -290,16 +290,16 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 *
 	 */
 
-	function mapbox_data_settings_menu() {
+	public function mapbox_data_settings_menu() {
 		add_options_page( 
 			'Mapbox Data for WordPress', 
 			'Mapbox Data', 'manage_options', 
 			'mapbox-data-for-wordpress', 
-			array($this, 'mapbox_data_settings_page')
+			array( $this, 'mapbox_data_settings_page' )
 		);
 	}
 
-	function mapbox_data_settings_page() {
+	public function mapbox_data_settings_page() {
 		if( !current_user_can( 'manage_options' ) ) {
 			wp_die( 'You do not have sufficient permissions to access this page.' );
 		}
