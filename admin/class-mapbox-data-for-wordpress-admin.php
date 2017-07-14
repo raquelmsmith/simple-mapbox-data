@@ -41,6 +41,15 @@ class Mapbox_Data_For_Wordpress_Admin {
 	private $version;
 
 	/**
+	 * The options data for the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $options;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -51,6 +60,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->options = get_option( 'mapbox_data' );
 
 	}
 
@@ -234,13 +244,14 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 */
 
 	public function send_data_to_mapbox( $post_id ) {
-		// prepare the data as json
-			// need: username, dataset ID, feature ID, access token
-		$options = get_option( 'mapbox_data' );
-		if( $options != '' ) {
-			$mapbox_account_username = $options[ 'mapbox_account_username' ];
-			$mapbox_access_token = $options[ 'mapbox_access_token' ];
-			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+		$post = get_post( $post_id );
+		if ( $post->post_type != 'map_data_point' ){
+			return;
+		}
+		if( $this->options != '' ) {
+			$mapbox_account_username = $this->options[ 'mapbox_account_username' ];
+			$mapbox_access_token = $this->options[ 'mapbox_access_token' ];
+			$mapbox_dataset_id = $this->options[ 'mapbox_dataset_id' ];
 		}
 		$post_meta_data = get_post_meta( $post_id );
 		$latitude = $post_meta_data['_mapbox_custom_data_latitude'];
@@ -282,6 +293,35 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'headers' => $headers,
 			'body' => $post_info,
 
+		);
+		$response = wp_remote_post( $url, $args );
+	}
+
+	/**
+	 * Delete a feature from Mapbox when moved to the trash in WordPress
+	 *
+	 */
+
+	public function delete_data_from_mapbox( $post_id ) {
+		$post = get_post( $post_id );
+		if ( $post->post_type != 'map_data_point' ) {
+			return;
+		}
+		if( $this->options != '' ) {
+			$mapbox_account_username = $this->options[ 'mapbox_account_username' ];
+			$mapbox_access_token = $this->options[ 'mapbox_access_token' ];
+			$mapbox_dataset_id = $this->options[ 'mapbox_dataset_id' ];
+		}
+		$url = 'https://api.mapbox.com/datasets/v1/' 
+			. $mapbox_account_username 
+			. '/' 
+			. $mapbox_dataset_id
+			. '/features/'
+			. $post_id
+			. '?access_token='
+			. $mapbox_access_token;
+		$args = array(
+			'method' => 'DELETE',
 		);
 		$response = wp_remote_post( $url, $args );
 	}

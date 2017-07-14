@@ -163,7 +163,9 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'init', $plugin_admin, 'register_map_data_post_type' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_box' );
 		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
-		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
+		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
+		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
+		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
 	}
 
 	/**
