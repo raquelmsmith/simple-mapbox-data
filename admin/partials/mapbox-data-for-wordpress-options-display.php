@@ -50,6 +50,22 @@
 											<input type="text" name="mapbox_dataset_id" value="<?php echo $mapbox_dataset_id; ?>" class="regular-text" />
 										</td>
 									</tr>
+									<tr>
+										<td scope="row">
+											<label for="tablecell"><?php esc_attr_e('Send Categories', 'wp_admin_style'); ?></label>
+										</td>
+										<td>
+											<input type="checkbox" name="mdfw_send_categories" value="1" <?php checked( $mdfw_send_categories, '1', TRUE ); ?> />
+										</td>
+									</tr>
+									<tr>
+										<td scope="row">
+											<label for="tablecell"><?php esc_attr_e('Send Tags', 'wp_admin_style'); ?></label>
+										</td>
+										<td>
+											<input type="checkbox" name="mdfw_send_tags" value="1" <?php checked( $mdfw_send_tags, '1', TRUE ); ?> />
+										</td>
+									</tr>
 								</table>
 
 								<h2><span><?php esc_attr_e( 'Custom Fields', 'wp_admin_style' ); ?></span></h2>

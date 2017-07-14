@@ -45,9 +45,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      bool    $options    The options for the mapbox data plugin.
 	 */
 	private $options;
+	private $mdfw_send_categories;
+	private $mdfw_send_tags;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -61,6 +63,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->options = get_option( 'mapbox_data' );
+		$this->mdfw_send_tags = $this->options['mdfw_send_tags'];
+		$this->mdfw_send_categories = $this->options['mdfw_send_categories'];
 
 	}
 
@@ -277,6 +281,28 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'content' => $content,
 			'year' => floatval($year),
 		);
+		if ( $this->mdfw_send_tags ) {
+			$tags = '';
+			foreach ( get_the_tags( $post_id ) as $tag ) {
+				if ( $tags == '' ) {
+					$tags = $tag->name;
+				} else {
+					$tags = $tags . ', ' . $tag->name;
+				}
+			}
+			$properties['tags'] = $tags;
+		}
+		if ( $this->mdfw_send_categories ) {
+			$categories = '';
+			foreach ( get_the_category( $post_id ) as $category ) {
+				if ( $categories == '' ) {
+					$categories = $category->name;
+				} else {
+					$categories = $categories . ', ' . $category->name;
+				}
+			}
+			$properties['categories'] = $categories;
+		}
 		$post_info = array(
 			'id'			=> strval($post_id),
 			'type'			=> 'Feature',

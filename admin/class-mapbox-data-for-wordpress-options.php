@@ -140,6 +140,10 @@ class Mapbox_Data_For_Wordpress_Options {
 				$options['mapbox_access_token']	= $mapbox_access_token;
 				$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
 				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
+				$mdfw_send_categories = $_POST['mdfw_send_categories'];
+				$options['mdfw_send_categories']	= $mdfw_send_categories;
+				$mdfw_send_tags = $_POST['mdfw_send_tags'];
+				$options['mdfw_send_tags']	= $mdfw_send_tags;
 				$custom_fields = array();
 				for ( $i = 0; $i < $number_fields; $i++ ) { 
 					$field_name = 'mdfw_custom_field_' . $i;
@@ -177,14 +181,21 @@ class Mapbox_Data_For_Wordpress_Options {
 			$mapbox_account_username = $options[ 'mapbox_account_username' ];
 			$mapbox_access_token = $options[ 'mapbox_access_token' ];
 			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+			$mdfw_send_categories = $options[ 'mdfw_send_categories' ];
+			$mdfw_send_tags = $options[ 'mdfw_send_tags' ];
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
 				$field_name = 'mdfw_custom_field_' . $i;
 				$field_type = $field_name . '_type';
 				$field_json = $field_name . '_json';
-
-				$$field_name = $options[ $field_name ];
-				$$field_type = $options[ $field_type ];
-				$$field_json = $options[ $field_json ];
+				if ( isset( $options[ $field_name ] ) ) {
+					$$field_name = $options[ $field_name ];
+					$$field_type = $options[ $field_type ];
+					$$field_json = $options[ $field_json ];
+				} else {
+					$$field_name = '';
+					$$field_type = '';
+					$$field_json = '';
+				}
 			}
 			$last_updated = $options[ 'last_updated' ];
 		}
