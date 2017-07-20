@@ -58,11 +58,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->options = get_option( 'mapbox_data' );
+		$this->options = $options;
 		$this->mdfw_send_tags = $this->options['mdfw_send_tags'];
 		$this->mdfw_send_categories = $this->options['mdfw_send_categories'];
 
