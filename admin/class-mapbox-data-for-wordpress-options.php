@@ -39,6 +39,7 @@ class Mapbox_Data_For_Wordpress_Options {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+	private $options;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -47,10 +48,11 @@ class Mapbox_Data_For_Wordpress_Options {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $options ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->options = $options;
 
 	}
 
@@ -201,6 +203,15 @@ class Mapbox_Data_For_Wordpress_Options {
 		}
 
 		require( 'partials/mapbox-data-for-wordpress-options-display.php' );
+	}
+
+	public function update_all_data_points() {
+		$options_passed = $this->options;
+		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
+		foreach ($map_data_points->posts as $map_data_point) {
+			$response = Mapbox_Data_For_Wordpress_Admin::send_data_to_mapbox( $map_data_point->ID );
+			echo $response;
+		}
 	}
 
 }

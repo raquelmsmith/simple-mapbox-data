@@ -56,6 +56,7 @@ class Mapbox_Data_For_Wordpress {
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
+	protected $options;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -70,6 +71,7 @@ class Mapbox_Data_For_Wordpress {
 
 		$this->plugin_name = 'mapbox-data-for-wordpress';
 		$this->version = '1.0.0';
+		$this->options = get_option( 'mapbox_data' );
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -156,16 +158,17 @@ class Mapbox_Data_For_Wordpress {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Mapbox_Data_For_Wordpress_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Mapbox_Data_For_Wordpress_Admin( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_admin, 'register_map_data_post_type' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_box' );
-		$this->loader->add_action( 'save_post_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
+		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
 		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
+		$this->loader->add_action( 'admin_footer', $plugin_admin, 'update_all_data_points' );
 	}
 
 	/**
@@ -177,7 +180,7 @@ class Mapbox_Data_For_Wordpress {
 	 */
 	private function define_options_hooks() {
 
-		$plugin_options = new Mapbox_Data_For_Wordpress_Options( $this->get_plugin_name(), $this->get_version() );
+		$plugin_options = new Mapbox_Data_For_Wordpress_Options( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_scripts' );
@@ -238,6 +241,16 @@ class Mapbox_Data_For_Wordpress {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Retrieve the options for the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
+	public function get_options() {
+		return $this->options;
 	}
 
 }

@@ -242,17 +242,34 @@ class Mapbox_Data_For_Wordpress_Admin {
 	    }
 	}
 
+	public function get_custom_fields_data( $post_id ) {
+		$number_fields = 3;
+		$post_meta_data = get_post_meta( $post_id );
+		$custom_fields = array();
+		for ( $i = 0; $i < $number_fields; $i++ ) { 
+			$field_name = 'mdfw_custom_field_' . $i;
+			$field_type = $field_name . '_type';
+			$field_json = $field_name . '_json';
+			if ( isset( $this->options[ $field_name ] ) &&  $this->options[ $field_json ] ) {
+				$$field_name = strtolower( $this->options[ $field_name ] );
+				$custom_fields[$$field_name] = $post_meta_data[ '_mapbox_custom_data_' . $$field_name][0];
+			}
+		}
+		return $custom_fields;
+	}
+
 	/**
 	 * Send the saved Map Data Point post info to Mapbox
 	 *
 	 */
 
 	public function send_data_to_mapbox( $post_id ) {
-		$post = get_post( $post_id );
-		if ( $post->post_type != 'map_data_point' ){
+		$post_object = get_post( $post_id );
+		if ( $post_object->post_type != 'map_data_point' ){
 			return;
 		}
 		if( $this->options != '' ) {
+			// todo: give error message that says it needs info on the options page
 			$mapbox_account_username = $this->options[ 'mapbox_account_username' ];
 			$mapbox_access_token = $this->options[ 'mapbox_access_token' ];
 			$mapbox_dataset_id = $this->options[ 'mapbox_dataset_id' ];
@@ -260,10 +277,6 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$post_meta_data = get_post_meta( $post_id );
 		$latitude = $post_meta_data['_mapbox_custom_data_latitude'];
 		$longitude = $post_meta_data['_mapbox_custom_data_longitude'];
-		$year = $post_meta_data['_mapbox_custom_data_year'][0];
-		$post_object = get_post( $post_id );
-		$title = $post_object->post_title;
-		$content = $post_object->post_content;
 		$url = 'https://api.mapbox.com/datasets/v1/' 
 			. $mapbox_account_username 
 			. '/' 
@@ -277,31 +290,23 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'coordinates'	=> array( floatval($latitude[0]), floatval($longitude[0]) ),
 		);
 		$properties = array(
-			'title' => $title,
-			'content' => $content,
-			'year' => floatval($year),
+			'post' => $post_object,
 		);
 		if ( $this->mdfw_send_tags ) {
-			$tags = '';
-			foreach ( get_the_tags( $post_id ) as $tag ) {
-				if ( $tags == '' ) {
-					$tags = $tag->name;
-				} else {
-					$tags = $tags . ', ' . $tag->name;
-				}
-			}
-			$properties['tags'] = $tags;
+			$properties[ 'tags' ] = get_the_tags( $post_id );
 		}
 		if ( $this->mdfw_send_categories ) {
-			$categories = '';
-			foreach ( get_the_category( $post_id ) as $category ) {
-				if ( $categories == '' ) {
-					$categories = $category->name;
-				} else {
-					$categories = $categories . ', ' . $category->name;
-				}
-			}
-			$properties['categories'] = $categories;
+			$properties['categories'] = get_the_category($post_id);
+		}
+		$custom_fields = $this->get_custom_fields_data( $post_id );
+		if ( $custom_fields ) {
+			$properties['custom_fields'] = $custom_fields;
+		}
+		$thumb_id = get_post_thumbnail_id( $post_id );
+		if ( $thumb_id ) {
+			$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'thumbnail-size', true);
+			$thumb_url = $thumb_url_array[0];
+			$properties['featured_image'] = $thumb_url;
 		}
 		$post_info = array(
 			'id'			=> strval($post_id),
@@ -321,6 +326,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 
 		);
 		$response = wp_remote_post( $url, $args );
+		//print_r($response);
+		return $response;
 	}
 
 	/**
@@ -350,6 +357,14 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'method' => 'DELETE',
 		);
 		$response = wp_remote_post( $url, $args );
+	}
+
+	public function update_all_data_points() {
+		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
+		foreach ($map_data_points->posts as $map_data_point) {
+			$response = $this->send_data_to_mapbox( $map_data_point->ID );
+			print_r($response);
+		}
 	}
 
 }

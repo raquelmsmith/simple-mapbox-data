@@ -11,3 +11,11 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+body {
+	background-color: green;
+}
+
+#map_data_point_meta_box {
+    background: green;
+}
