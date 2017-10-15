@@ -359,6 +359,109 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$response = wp_remote_post( $url, $args );
 	}
 
+	/**
+	 * Add a link to the settings page in the admin menu
+	 * under Settings -> Mapbox Data
+	 *
+	 */
+
+	public function mapbox_data_settings_menu() {
+		add_options_page( 
+			'Mapbox Data for WordPress', 
+			'Mapbox Data', 'manage_options', 
+			'mapbox-data-for-wordpress', 
+			array( $this, 'mapbox_data_settings_page' )
+		);
+	}
+
+	/**
+	 * Fill fields in options page with existing data
+	 * and write new field data to the database
+	 *
+	 */
+
+	public function mapbox_data_settings_page() {
+		if( !current_user_can( 'manage_options' ) ) {
+			wp_die( 'You do not have sufficient permissions to access this page.' );
+		}
+
+		$options;
+		$number_fields = 3;
+
+		//Write to the database
+
+		if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
+			$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
+			if ( $hidden_field == 'Y' ) {
+				$mapbox_account_username = $_POST['mapbox_account_username'];
+				$options['mapbox_account_username']	= $mapbox_account_username;
+				$mapbox_access_token = $_POST['mapbox_access_token'];
+				$options['mapbox_access_token']	= $mapbox_access_token;
+				$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
+				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
+				$mdfw_send_categories = $_POST['mdfw_send_categories'];
+				$options['mdfw_send_categories']	= $mdfw_send_categories;
+				$mdfw_send_tags = $_POST['mdfw_send_tags'];
+				$options['mdfw_send_tags']	= $mdfw_send_tags;
+				$custom_fields = array();
+				for ( $i = 0; $i < $number_fields; $i++ ) { 
+					$field_name = 'mdfw_custom_field_' . $i;
+					$field_type = $field_name . '_type';
+					$field_json = $field_name . '_json';
+
+					if( '' != $_POST[$field_name] ) {
+						$$field_name = $_POST[$field_name];
+						$options[$field_name]	= $$field_name;
+						$$field_type = $_POST[$field_type];
+						$options[$field_type]	= $$field_type;
+						$$field_json = $_POST[$field_json];
+						$options[$field_json]	= $$field_json;
+
+						//Save to custom fields array
+						$custom_fields[] = array(
+							'name'	=> $$field_name,
+					        'type'  => $$field_type,
+					        'json'	=> $$field_json,
+						);
+					}
+				}
+				$options['last_updated'] = time();
+				$options['custom_fields'] = $custom_fields;
+
+				update_option( 'mapbox_data', $options );
+			}
+
+		}
+
+		// Get option values from the database
+
+		$options = get_option( 'mapbox_data' );
+		if( $options != '' ) {
+			$mapbox_account_username = $options[ 'mapbox_account_username' ];
+			$mapbox_access_token = $options[ 'mapbox_access_token' ];
+			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+			$mdfw_send_categories = $options[ 'mdfw_send_categories' ];
+			$mdfw_send_tags = $options[ 'mdfw_send_tags' ];
+			for ( $i = 0; $i < $number_fields; $i++ ) { 
+				$field_name = 'mdfw_custom_field_' . $i;
+				$field_type = $field_name . '_type';
+				$field_json = $field_name . '_json';
+				if ( isset( $options[ $field_name ] ) ) {
+					$$field_name = $options[ $field_name ];
+					$$field_type = $options[ $field_type ];
+					$$field_json = $options[ $field_json ];
+				} else {
+					$$field_name = '';
+					$$field_type = '';
+					$$field_json = '';
+				}
+			}
+			$last_updated = $options[ 'last_updated' ];
+		}
+
+		require( 'partials/mapbox-data-for-wordpress-options-display.php' );
+	}
+
 	public function update_all_data_points() {
 		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
 		foreach ($map_data_points->posts as $map_data_point) {

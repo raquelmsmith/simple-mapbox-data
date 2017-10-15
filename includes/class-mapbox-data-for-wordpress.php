@@ -76,7 +76,6 @@ class Mapbox_Data_For_Wordpress {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_options_hooks();
 		$this->define_public_hooks();
 
 	}
@@ -169,22 +168,7 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'update_all_data_points' );
-	}
-
-	/**
-	 * Register all of the hooks related to the options page functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_options_hooks() {
-
-		$plugin_options = new Mapbox_Data_For_Wordpress_Options( $this->get_plugin_name(), $this->get_version(), $this->get_options() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_options, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $plugin_options, 'mapbox_data_settings_menu' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
 	}
 
 	/**
