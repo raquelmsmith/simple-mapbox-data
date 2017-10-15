@@ -117,11 +117,6 @@ class Mapbox_Data_For_Wordpress {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mapbox-data-for-wordpress-admin.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the options page.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-mapbox-data-for-wordpress-options.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -167,8 +162,8 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
-		$this->loader->add_action( 'admin_footer', $plugin_admin, 'update_all_data_points' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
+		$this->loader->add_action( 'wp_ajax_mdfw_update_all', $plugin_admin, 'update_all_data_points' );
 	}
 
 	/**

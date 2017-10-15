@@ -111,6 +111,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mapbox-data-for-wordpress-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script( 'mdfw_admin_script', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 	}
 
@@ -463,11 +464,16 @@ class Mapbox_Data_For_Wordpress_Admin {
 	}
 
 	public function update_all_data_points() {
+		if ( !wp_verify_nonce( $_REQUEST['nonce'], "mdfw_update_all_nonce")) {
+	    	exit("No naughty business please");
+		} 
 		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
 		foreach ($map_data_points->posts as $map_data_point) {
 			$response = $this->send_data_to_mapbox( $map_data_point->ID );
-			print_r($response);
+			// todo: log errors and display so user knows when request fails
 		}
+		echo "success";
+		die();
 	}
 
 }

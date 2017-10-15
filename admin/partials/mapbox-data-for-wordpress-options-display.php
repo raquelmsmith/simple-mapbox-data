@@ -153,9 +153,10 @@
 									'If you have updated your Mapbox data in bulk or changed your settings, use the button below to send all existing data to Mapbox again. Do not close the page while the data is being updated.',
 									'wp_admin_style'
 								); ?></p>
-								<input class="button-secondary" type="submit" name="mdfw-update-all" value="<?php esc_attr_e( 'Send all data to Mapbox' ); ?>" />
-								<p><span class="dashicons dashicons-update loader"></span>Working... please leave the window open.</p>
-								<p><span class="dashicons dashicons-yes"></span>Done! You may now close this window.</p>
+								<?php $nonce = wp_create_nonce("mdfw_update_all_nonce"); ?>
+								<a class="button-secondary mdfw-update-all" href="<?php echo admin_url('admin-ajax.php?action=mdfw_update_all&nonce='.$nonce); ?>" data-nonce="<?php echo $nonce; ?>"><?php esc_attr_e( 'Send all data to Mapbox' ); ?></a>
+								<p class="sending-data"><span class="dashicons dashicons-update loader"></span>Working... please leave the window open.</p>
+								<p class="data-sent"><span class="dashicons dashicons-yes"></span>Done! You may now close this window.</p>
 						</div>
 						<!-- .inside -->
 

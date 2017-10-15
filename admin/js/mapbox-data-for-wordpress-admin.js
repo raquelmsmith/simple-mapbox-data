@@ -29,4 +29,30 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(document).ready( function() {
+	
+		$(".mdfw-update-all").click( function(e) {
+			e.preventDefault(); 
+			$(".sending-data").show();
+			var nonce = $(this).attr("data-nonce");
+
+			$.ajax({
+				type : "post",
+				url : ajaxurl,
+		    	data : {action: "mdfw_update_all", nonce: nonce},
+				success: function(response) {
+					if(response == "success") {
+						$(".sending-data").hide();
+						$(".data-sent").show();
+					}
+					else {
+						alert("Not updated")
+					}
+				}
+			})
+
+		})
+
+	})
+
 })( jQuery );
