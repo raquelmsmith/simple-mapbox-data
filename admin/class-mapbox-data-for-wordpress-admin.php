@@ -288,7 +288,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 			. $mapbox_access_token;
 		$geometry = array(
 			'type' 			=> 'Point',
-			'coordinates'	=> array( floatval($latitude[0]), floatval($longitude[0]) ),
+			'coordinates'	=> array( floatval($longitude[0]), floatval($latitude[0]) ),
 		);
 		$properties = array(
 			'post' => $post_object,
