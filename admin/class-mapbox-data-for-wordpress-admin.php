@@ -232,7 +232,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 		}
 		// loop through fields and save the data
 	    foreach ($custom_meta_fields as $field) {
-	    	$fieldID = strtolower($field['id']);
+	    	$fieldID = strtolower( preg_replace( "/\s/", "_", $field[ 'id' ] ) );
 	        $old = get_post_meta($post_id, '_' . $fieldID, true);
 	        $new = $_POST[$fieldID];
 	        if ($new && $new != $old) {
