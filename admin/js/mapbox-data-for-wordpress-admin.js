@@ -1,58 +1,41 @@
 (function( $ ) {
 	'use strict';
 
-	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
-
 	$(document).ready( function() {
+		var i = 0;
+		function update_all_data_points() {
+			if( (typeof mdfwAjax.map_data_points.posts[i] == 'undefined') ) {
+				$(".sending-data").hide();
+				$(".data-sent").show();
+				return;
+			}
+			console.log('Updating post number: ' + mdfwAjax.map_data_points.posts[i].ID);
+			$.ajax({
+				type: "post",
+				url: ajaxurl,
+				data: {
+					'action': 'get_id_send_data',
+					'data_point_id': mdfwAjax.map_data_points.posts[i].ID
+				},
+				success: function(response_code) {
+					if (response_code == 200) {
+						console.log("Post updated successfully.");
+					} else {
+						console.log("There was a problem updating the post. The response code was: " + response_code);
+					}
+					i++;
+					update_all_data_points();
+				}
+			});	
+		}
 	
 		$(".mdfw-update-all").click( function(e) {
 			e.preventDefault(); 
 			$(".sending-data").show();
-			var nonce = $(this).attr("data-nonce");
-
-			$.ajax({
-				type : "post",
-				url : ajaxurl,
-		    	data : {action: "mdfw_update_all", nonce: nonce},
-				success: function(response) {
-					if(response == "success") {
-						$(".sending-data").hide();
-						$(".data-sent").show();
-					}
-					else {
-						alert("Not updated")
-					}
-				}
-			})
+			update_all_data_points();
+			
 
 		})
-
 	})
 
 })( jQuery );

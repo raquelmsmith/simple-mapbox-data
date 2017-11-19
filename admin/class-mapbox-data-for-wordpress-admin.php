@@ -57,6 +57,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @since    1.0.0
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
+	 * @param      array    $options    The options for this plugin.
 	 */
 	public function __construct( $plugin_name, $version, $options ) {
 
@@ -74,21 +75,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Mapbox_Data_For_Wordpress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Mapbox_Data_For_Wordpress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/mapbox-data-for-wordpress-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -98,21 +85,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Mapbox_Data_For_Wordpress_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Mapbox_Data_For_Wordpress_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mapbox-data-for-wordpress-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( 'mdfw_admin_script', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
-
+		wp_localize_script( $this->plugin_name, 'mdfwAjax', array( 
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'map_data_points' => self::get_all_data_points(),
+		));
 	}
 
 	/**
@@ -165,6 +142,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	/**
 	 * Add meta box for custom fields
 	 *
+	 * @since    1.0.0
 	 */
 	public function add_meta_box() {
 		add_meta_box( 
@@ -177,10 +155,21 @@ class Mapbox_Data_For_Wordpress_Admin {
 		);
 	}
 
+	/**
+	 * Build the meta box in the map data post type. 
+	 *
+	 * @since    1.0.0
+	 */
 	public function build_meta_box() {
         require_once plugin_dir_path( __FILE__ ) . 'partials/mapbox-data-for-wordpress-admin-display.php';
     }
 
+    /**
+	 * Create the array that holds all the information for all the custom
+	 * fields, including latitude and longitude
+	 *
+	 * @since    1.0.0
+	 */
 	public function create_custom_meta_fields_array() {
 		$prefix = 'mapbox_custom_data_';
 		$custom_meta_fields = array(
@@ -243,6 +232,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 	    }
 	}
 
+	/**
+	 * Retrieve the custom fields info and 
+	 *
+	 * @param int $post_id The post ID.
+	 */
 	public function get_custom_fields_data( $post_id ) {
 		$number_fields = 3;
 		$post_meta_data = get_post_meta( $post_id );
@@ -257,6 +251,14 @@ class Mapbox_Data_For_Wordpress_Admin {
 			}
 		}
 		return $custom_fields;
+	}
+
+	public function get_id_send_data() {
+		$id = $_POST[ 'data_point_id' ];
+		$response = self::send_data_to_mapbox( $id );
+		$response_code = wp_remote_retrieve_response_code( $response );
+		echo $response_code;
+		die();
 	}
 
 	/**
@@ -326,8 +328,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'body' => $post_info,
 
 		);
-		$response = wp_remote_post( $url, $args );
-		//print_r($response);
+		$response =wp_remote_post( $url, $args );
 		return $response;
 	}
 
@@ -463,17 +464,9 @@ class Mapbox_Data_For_Wordpress_Admin {
 		require( 'partials/mapbox-data-for-wordpress-options-display.php' );
 	}
 
-	public function update_all_data_points() {
-		if ( !wp_verify_nonce( $_REQUEST['nonce'], "mdfw_update_all_nonce")) {
-	    	exit("No naughty business please");
-		} 
+	public function get_all_data_points() {
 		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
-		foreach ($map_data_points->posts as $map_data_point) {
-			$response = $this->send_data_to_mapbox( $map_data_point->ID );
-			// todo: log errors and display so user knows when request fails
-		}
-		echo "success";
-		die();
+		return $map_data_points;
 	}
 
 }
