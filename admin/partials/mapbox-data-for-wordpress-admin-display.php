@@ -3,7 +3,8 @@
 /**
  * Provide a admin area view for the plugin
  *
- * This file is used to markup the admin-facing aspects of the plugin.
+ * This file is used to markup the custom meta box fields 
+ * for posts of the map_data_point post type.
  *
  * @link       raquelmsmith.com
  * @since      1.0.0
@@ -12,8 +13,6 @@
  * @subpackage Mapbox_Data_For_Wordpress/admin/partials
  */
 ?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <?php
 		$custom_meta_fields = $this->create_custom_meta_fields_array();

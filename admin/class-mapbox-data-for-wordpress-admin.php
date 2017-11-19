@@ -464,6 +464,10 @@ class Mapbox_Data_For_Wordpress_Admin {
 		require( 'partials/mapbox-data-for-wordpress-options-display.php' );
 	}
 
+	/**
+	 * Gets all the posts with the map_data_point post type
+	 *
+	 */
 	public function get_all_data_points() {
 		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
 		return $map_data_points;

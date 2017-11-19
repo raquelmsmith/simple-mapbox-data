@@ -1,3 +1,16 @@
+<?php
+/**
+ * Provide the markup for the options page for the plugin.
+ *
+ *
+ * @link       raquelmsmith.com
+ * @since      1.0.0
+ *
+ * @package    Mapbox_Data_For_Wordpress
+ * @subpackage Mapbox_Data_For_Wordpress/admin/partials
+ */
+?>
+
 <h2><?php _e( 'Mapbox Data for WordPress', 'wp_admin_style' ); ?></h2>
 
 <div class="wrap">
