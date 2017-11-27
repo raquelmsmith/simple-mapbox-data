@@ -469,7 +469,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 *
 	 */
 	public function get_all_data_points() {
-		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point' ) );
+		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point', 'nopaging' => true ) );
 		return $map_data_points;
 	}
 
