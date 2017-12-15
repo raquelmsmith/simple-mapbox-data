@@ -134,7 +134,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 				'editor',
 				'author',
 				'thumbnail',  
-				'revisions' )
+				'revisions',
+				'excerpt' )
 		);
 		register_post_type( 'map_data_point', $args );
 	}
@@ -247,7 +248,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 			$field_json = $field_name . '_json';
 			if ( isset( $this->options[ $field_name ] ) &&  $this->options[ $field_json ] ) {
 				$$field_name = strtolower( $this->options[ $field_name ] );
-				$custom_fields[$$field_name] = $post_meta_data[ '_mapbox_custom_data_' . $$field_name][0];
+				$custom_fields["custom_field_" . $$field_name] = $post_meta_data[ '_mapbox_custom_data_' . $$field_name][0];
 			}
 		}
 		return $custom_fields;
@@ -292,9 +293,9 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'type' 			=> 'Point',
 			'coordinates'	=> array( floatval($longitude[0]), floatval($latitude[0]) ),
 		);
-		$properties = array(
-			'post' => $post_object,
-		);
+		$properties = array();
+		$post_array = (array) $post_object;
+		$properties = array_merge( $properties, $post_array );
 		if ( $this->mdfw_send_tags ) {
 			$properties[ 'tags' ] = get_the_tags( $post_id );
 		}
@@ -303,7 +304,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 		}
 		$custom_fields = $this->get_custom_fields_data( $post_id );
 		if ( $custom_fields ) {
-			$properties['custom_fields'] = $custom_fields;
+			$properties = array_merge( $properties, $custom_fields );
 		}
 		$thumb_id = get_post_thumbnail_id( $post_id );
 		if ( $thumb_id ) {
