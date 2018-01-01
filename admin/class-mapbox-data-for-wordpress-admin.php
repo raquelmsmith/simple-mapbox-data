@@ -297,10 +297,17 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$post_array = (array) $post_object;
 		$properties = array_merge( $properties, $post_array );
 		if ( $this->mdfw_send_tags ) {
-			$properties[ 'tags' ] = get_the_tags( $post_id );
+			$tags = get_the_tags( $post_id );
+			foreach ($tags as $tag) {
+				$properties['tag_' . $tag->slug] = $tag;
+			}
 		}
 		if ( $this->mdfw_send_categories ) {
-			$properties['categories'] = get_the_category($post_id);
+			$categories = get_the_category($post_id);
+			foreach ($categories as $category) {
+				$properties['category_' . $category->slug] = $category;
+			}
+
 		}
 		$custom_fields = $this->get_custom_fields_data( $post_id );
 		if ( $custom_fields ) {
