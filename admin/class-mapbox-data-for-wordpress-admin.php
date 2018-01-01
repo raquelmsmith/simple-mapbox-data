@@ -403,11 +403,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 		if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
 			$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
 			if ( $hidden_field == 'Y' ) {
-				$mapbox_account_username = $_POST['mapbox_account_username'];
+				$mapbox_account_username = sanitize_text_field( $_POST['mapbox_account_username'] );
 				$options['mapbox_account_username']	= $mapbox_account_username;
-				$mapbox_access_token = $_POST['mapbox_access_token'];
+				$mapbox_access_token = sanitize_text_field( $_POST['mapbox_access_token'] );
 				$options['mapbox_access_token']	= $mapbox_access_token;
-				$mapbox_dataset_id = $_POST['mapbox_dataset_id'];
+				$mapbox_dataset_id = sanitize_text_field( $_POST['mapbox_dataset_id'] );
 				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
 				$mdfw_send_categories = $_POST['mdfw_send_categories'];
 				$options['mdfw_send_categories']	= $mdfw_send_categories;
@@ -420,11 +420,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 					$field_json = $field_name . '_json';
 
 					if( '' != $_POST[$field_name] ) {
-						$$field_name = $_POST[$field_name];
+						$$field_name = sanitize_text_field( $_POST[$field_name] );
 						$options[$field_name]	= $$field_name;
-						$$field_type = $_POST[$field_type];
+						$$field_type = sanitize_text_field( $_POST[$field_type] );
 						$options[$field_type]	= $$field_type;
-						$$field_json = $_POST[$field_json];
+						$$field_json = sanitize_text_field( $_POST[$field_json] );
 						$options[$field_json]	= $$field_json;
 
 						//Save to custom fields array
