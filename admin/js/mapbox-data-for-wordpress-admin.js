@@ -5,8 +5,8 @@
 		var i = 0;
 		function update_all_data_points() {
 			if( (typeof mdfwAjax.map_data_points.posts[i] == 'undefined') ) {
-				$(".sending-data").hide();
-				$(".data-sent").show();
+				$(".mdfw-update-all + .sending-data").hide();
+				$(".mdfw-update-all + .sending-data + .data-sent").show();
 				return;
 			}
 			console.log('Updating post number: ' + mdfwAjax.map_data_points.posts[i].ID);
@@ -28,13 +28,32 @@
 				}
 			});	
 		}
+
+		function update_tileset() {
+			$.ajax({
+				type: "post",
+				url: ajaxurl,
+				data: {
+					'action': 'update_tileset',
+				},
+				success: function(response) {
+					console.log(response);
+					$(".mdfw-update-tileset + .sending-data").hide();
+					$(".mdfw-update-tileset + .sending-data + .data-sent").show();
+				}
+			});	
+		}
 	
 		$(".mdfw-update-all").click( function(e) {
 			e.preventDefault(); 
-			$(".sending-data").show();
+			$(".mdfw-update-all + .sending-data").show();
 			update_all_data_points();
-			
+		})
 
+		$(".mdfw-update-tileset").click( function(e) {
+			e.preventDefault(); 
+			$(".mdfw-update-tileset + .sending-data").show();
+			update_tileset();
 		})
 	})
 

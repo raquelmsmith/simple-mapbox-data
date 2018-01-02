@@ -254,6 +254,11 @@ class Mapbox_Data_For_Wordpress_Admin {
 		return $custom_fields;
 	}
 
+	/**
+	 * Send data to Mapbox for a given ID. Used for updating all data points.
+	 *
+	 */
+
 	public function get_id_send_data() {
 		$id = $_POST[ 'data_point_id' ];
 		$response = self::send_data_to_mapbox( $id );
@@ -334,7 +339,6 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'method' => 'PUT',
 			'headers' => $headers,
 			'body' => $post_info,
-
 		);
 		$response =wp_remote_post( $url, $args );
 		return $response;
@@ -367,6 +371,35 @@ class Mapbox_Data_For_Wordpress_Admin {
 			'method' => 'DELETE',
 		);
 		$response = wp_remote_post( $url, $args );
+	}
+
+	public function update_tileset() {
+		if( $this->options != '' ) {
+			$mapbox_account_username = $this->options[ 'mapbox_account_username' ];
+			$mapbox_access_token = $this->options[ 'mapbox_access_token' ];
+			$mapbox_dataset_id = $this->options[ 'mapbox_dataset_id' ];
+			$mapbox_tileset_id = $this->options[ 'mapbox_tileset_id' ];
+		}
+
+		$headers = array(
+			'content-type' => 'application/json',
+		);
+		$request_body = array(
+			'tileset' => $mapbox_account_username . '.' . $mapbox_tileset_id,
+			'url'     => 'mapbox://datasets/' . $mapbox_account_username . '/' . $mapbox_dataset_id,
+		);
+		$request_body = json_encode( $request_body );
+		$url = 'https://api.mapbox.com/uploads/v1/' 
+			. $mapbox_account_username 
+			. '?access_token='
+			. $mapbox_access_token;
+		$args = array(
+			'method'  => 'POST',
+			'headers' => $headers,
+			'body'    => $request_body
+		);
+		$response = wp_remote_post( $url, $args );
+		echo json_encode( $response );
 	}
 
 	/**
@@ -409,6 +442,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 				$options['mapbox_access_token']	= $mapbox_access_token;
 				$mapbox_dataset_id = sanitize_text_field( $_POST['mapbox_dataset_id'] );
 				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
+				$mapbox_tileset_id = sanitize_text_field( $_POST['mapbox_tileset_id'] );
+				$options['mapbox_tileset_id']	= $mapbox_tileset_id;
 				$mdfw_send_categories = $_POST['mdfw_send_categories'];
 				$options['mdfw_send_categories']	= $mdfw_send_categories;
 				$mdfw_send_tags = $_POST['mdfw_send_tags'];
@@ -450,6 +485,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 			$mapbox_account_username = $options[ 'mapbox_account_username' ];
 			$mapbox_access_token = $options[ 'mapbox_access_token' ];
 			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
+			$mapbox_tileset_id = $options[ 'mapbox_tileset_id' ];
 			$mdfw_send_categories = $options[ 'mdfw_send_categories' ];
 			$mdfw_send_tags = $options[ 'mdfw_send_tags' ];
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
