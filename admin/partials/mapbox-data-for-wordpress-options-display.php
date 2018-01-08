@@ -175,9 +175,18 @@
 
 						<div class="inside">
 							<p><?php esc_html_e(
-									'If you have updated your Mapbox data in bulk or changed your settings, use the button below to send all existing data to Mapbox again. Do not close the page while the data is being updated.',
+									'If you have updated your Mapbox data in bulk or changed your settings, use the button below to send all existing data to Mapbox again. If you want to limit the post range, include post IDs in the boxes below. Do not close the page while the data is being updated.',
 									'mapbox-data-for-wordpress'
 								); ?></p>
+								<h4><?php esc_html_e(
+									'Post Range', 'mapbox-data-for-wordpress'
+								); ?></h4>
+								<div class="post-range-fields">
+									<div class="low"><input type="text" name="low" placeholder="<?php esc_html_e( 'Low', 'mapbox-data-for-wordpress' ); ?>"/></div>
+									<div class="separator">-</div>
+									<div class="high"><input type="text" name="high" placeholder="<?php esc_html_e( 'High', 'mapbox-data-for-wordpress' ); ?>"  /></div>
+								</div>
+
 								<?php $nonce = wp_create_nonce("mdfw_update_all_nonce"); ?>
 								<a class="button-secondary mdfw-update-all" href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=mdfw_update_all&nonce=' . $nonce ) ); ?>" data-nonce="<?php esc_attr_e( $nonce, 'mapbox-data-for-wordpress' ); ?>"><?php esc_html_e( 'Send all data to Mapbox' ); ?></a>
 								<p class="sending-data"><span class="dashicons dashicons-update loader"></span><?php esc_html_e( 'Working... please leave the window open.', 'mapbox-data-for-wordpress' ); ?></p>

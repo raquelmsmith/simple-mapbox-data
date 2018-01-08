@@ -14,3 +14,23 @@
 .sending-data, .data-sent {
 	display: none;
 }
+
+.post-range-fields {
+	display: flex;
+	margin-bottom: 1.33rem;
+}
+
+.post-range-fields .high,
+.post-range-fields .low {
+	width: 45%;
+}
+
+.post-range-fields .high input,
+.post-range-fields .low input {
+	width: 100%;
+}
+
+.post-range-fields .separator {
+	width: 10%;
+	text-align: center;
+}

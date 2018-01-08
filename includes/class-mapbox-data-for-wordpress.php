@@ -163,6 +163,7 @@ class Mapbox_Data_For_Wordpress {
 		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
 		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
+		$this->loader->add_action( 'wp_ajax_get_all_data_points', $plugin_admin, 'get_all_data_points' );
 		$this->loader->add_action( 'wp_ajax_get_id_send_data', $plugin_admin, 'get_id_send_data' );
 		$this->loader->add_action( 'wp_ajax_update_tileset', $plugin_admin, 'update_tileset' );
 	}

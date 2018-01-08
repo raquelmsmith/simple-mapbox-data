@@ -86,10 +86,6 @@ class Mapbox_Data_For_Wordpress_Admin {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mapbox-data-for-wordpress-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'mdfwAjax', array( 
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'map_data_points' => self::get_all_data_points(),
-		));
 	}
 
 	/**
@@ -513,8 +509,24 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 *
 	 */
 	public function get_all_data_points() {
-		$map_data_points = new WP_Query( array( 'post_type' => 'map_data_point', 'nopaging' => true ) );
-		return $map_data_points;
+		$low = sanitize_text_field( intval( $_POST['low'] ) );
+		$high = sanitize_text_field( intval( $_POST['high'] ) );
+		$args = array( 'post_type' => 'map_data_point', 'nopaging' => true );
+		$posts_in_range = array();
+		if ( 0 != $low || 0 != $high ) {
+			if ( 0 != $low && 0 == $high ) {
+				$high = $low;
+			}
+			if ( 0 == $low && 0 != $high ) {
+				$low = $high;
+			}
+			for ( $i = $low; $i <= $high; $i++ ) {
+				$posts_in_range[] = $i;
+			}
+			$args['post__in'] = $posts_in_range;
+		}
+		$map_data_points = new WP_Query( $args );
+		exit( json_encode( $map_data_points ) );
 	}
 
 }
