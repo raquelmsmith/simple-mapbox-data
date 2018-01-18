@@ -2,7 +2,7 @@
 /**
  * Class SampleTest
  *
- * @package Mapbox_Data_For_Wordpress
+ * @package simple_mapbox_data
  */
 
 /**

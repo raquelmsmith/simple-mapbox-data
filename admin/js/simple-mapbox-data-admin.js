@@ -26,8 +26,8 @@
 
 		function update_all_data_points() {
 			if( (typeof mapDataPoints[i] == 'undefined') ) {
-				$(".mdfw-update-all + .sending-data").hide();
-				$(".mdfw-update-all + .sending-data + .data-sent").show();
+				$(".smd-update-all + .sending-data").hide();
+				$(".smd-update-all + .sending-data + .data-sent").show();
 				return;
 			}
 			console.log('Updating post number: ' + mapDataPoints[i].ID);
@@ -59,21 +59,21 @@
 				},
 				success: function(response) {
 					console.log(response);
-					$(".mdfw-update-tileset + .sending-data").hide();
-					$(".mdfw-update-tileset + .sending-data + .data-sent").show();
+					$(".smd-update-tileset + .sending-data").hide();
+					$(".smd-update-tileset + .sending-data + .data-sent").show();
 				}
 			});	
 		}
 	
-		$(".mdfw-update-all").click( function(e) {
+		$(".smd-update-all").click( function(e) {
 			e.preventDefault(); 
-			$(".mdfw-update-all + .sending-data").show();
+			$(".smd-update-all + .sending-data").show();
 			getDataPoints();
 		})
 
-		$(".mdfw-update-tileset").click( function(e) {
+		$(".smd-update-tileset").click( function(e) {
 			e.preventDefault(); 
-			$(".mdfw-update-tileset + .sending-data").show();
+			$(".smd-update-tileset + .sending-data").show();
 			update_tileset();
 		})
 	})

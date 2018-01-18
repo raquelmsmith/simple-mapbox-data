@@ -6,8 +6,8 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/admin
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/admin
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/admin
  * @author     Raquel Smith <raquel@raquelmsmith.com>
  */
-class Mapbox_Data_For_Wordpress_Admin {
+class Simple_Mapbox_Data_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -48,8 +48,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @var      bool    $options    The options for the mapbox data plugin.
 	 */
 	private $options;
-	private $mdfw_send_categories;
-	private $mdfw_send_tags;
+	private $smd_send_categories;
+	private $smd_send_tags;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -64,8 +64,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->options = $options;
-		$this->mdfw_send_tags = $this->options['mdfw_send_tags'];
-		$this->mdfw_send_categories = $this->options['mdfw_send_categories'];
+		$this->smd_send_tags = $this->options['smd_send_tags'];
+		$this->smd_send_categories = $this->options['smd_send_categories'];
 
 	}
 
@@ -75,7 +75,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/mapbox-data-for-wordpress-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/simple-mapbox-data-admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mapbox-data-for-wordpress-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/simple-mapbox-data-admin.js', array( 'jquery' ), $this->version, false );
 	}
 
 	/**
@@ -95,20 +95,20 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 */
 	public function register_map_data_post_type() {
 		$labels = array(
-			'name'					=> _x( 'Map Data', 'post type general name', 'mapbox-data-for-wordpress' ),
-			'singular_name'			=> _x( 'Map Data Point', 'post type singular name', 'mapbox-data-for-wordpress' ),
-			'menu_name'				=> _x( 'Map Data', 'admin menu', 'mapbox-data-for-wordpress' ),
-			'name_admin_bar'		=> _x( 'Map Data Point', 'add new on admin bar', 'mapbox-data-for-wordpress' ),
-			'add_new'				=> _x( 'Add New', 'data point', 'mapbox-data-for-wordpress' ),
-			'add_new_item'			=> __( 'Add New Data Point', 'mapbox-data-for-wordpress' ),
-			'new_item'				=> __( 'New Data Point', 'mapbox-data-for-wordpress' ),
-			'edit_item'				=> __( 'Edit Data Point', 'mapbox-data-for-wordpress' ),
-			'view_item'				=> __( 'View Data Point', 'mapbox-data-for-wordpress' ),
-			'all_items'				=> __( 'All Map Data Points', 'mapbox-data-for-wordpress' ),
-			'search_items'			=> __( 'Search Map Data Points', 'mapbox-data-for-wordpress' ),
-			'parent_item_colon'		=> __( 'Parent Map Data Points:', 'mapbox-data-for-wordpress' ),
-			'not_found'				=> __( 'No Map Data Points found.', 'mapbox-data-for-wordpress' ),
-			'not_found_in_trash'	=> __( 'No Map Data Points found in Trash.', 'mapbox-data-for-wordpress' )
+			'name'					=> _x( 'Map Data', 'post type general name', 'simple-mapbox-data' ),
+			'singular_name'			=> _x( 'Map Data Point', 'post type singular name', 'simple-mapbox-data' ),
+			'menu_name'				=> _x( 'Map Data', 'admin menu', 'simple-mapbox-data' ),
+			'name_admin_bar'		=> _x( 'Map Data Point', 'add new on admin bar', 'simple-mapbox-data' ),
+			'add_new'				=> _x( 'Add New', 'data point', 'simple-mapbox-data' ),
+			'add_new_item'			=> __( 'Add New Data Point', 'simple-mapbox-data' ),
+			'new_item'				=> __( 'New Data Point', 'simple-mapbox-data' ),
+			'edit_item'				=> __( 'Edit Data Point', 'simple-mapbox-data' ),
+			'view_item'				=> __( 'View Data Point', 'simple-mapbox-data' ),
+			'all_items'				=> __( 'All Map Data Points', 'simple-mapbox-data' ),
+			'search_items'			=> __( 'Search Map Data Points', 'simple-mapbox-data' ),
+			'parent_item_colon'		=> __( 'Parent Map Data Points:', 'simple-mapbox-data' ),
+			'not_found'				=> __( 'No Map Data Points found.', 'simple-mapbox-data' ),
+			'not_found_in_trash'	=> __( 'No Map Data Points found in Trash.', 'simple-mapbox-data' )
 		);
 		$args = array(
 			'labels'				=> $labels,
@@ -144,7 +144,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	public function add_meta_box() {
 		add_meta_box( 
 			'map_data_point_meta_box', 
-			'Mapbox Custom Data', 
+			'Simple Mapbox Data Custom Fields', 
 			array( $this, 'build_meta_box' ), 
 			'map_data_point', 
 			'normal', 
@@ -158,7 +158,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 * @since    1.0.0
 	 */
 	public function build_meta_box() {
-        require_once plugin_dir_path( __FILE__ ) . 'partials/mapbox-data-for-wordpress-admin-display.php';
+        require_once plugin_dir_path( __FILE__ ) . 'partials/simple-mapbox-data-admin-display.php';
     }
 
     /**
@@ -240,7 +240,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$post_meta_data = get_post_meta( $post_id );
 		$custom_fields = array();
 		for ( $i = 0; $i < $number_fields; $i++ ) { 
-			$field_name = 'mdfw_custom_field_' . $i;
+			$field_name = 'smd_custom_field_' . $i;
 			$field_type = $field_name . '_type';
 			$field_json = $field_name . '_json';
 			if ( isset( $this->options[ $field_name ] ) &&  $this->options[ $field_json ] ) {
@@ -298,13 +298,13 @@ class Mapbox_Data_For_Wordpress_Admin {
 		$properties = array();
 		$post_array = (array) $post_object;
 		$properties = array_merge( $properties, $post_array );
-		if ( $this->mdfw_send_tags ) {
+		if ( $this->smd_send_tags ) {
 			$tags = get_the_tags( $post_id );
 			foreach ($tags as $tag) {
 				$properties['tag_' . $tag->slug] = $tag;
 			}
 		}
-		if ( $this->mdfw_send_categories ) {
+		if ( $this->smd_send_categories ) {
 			$categories = get_the_category($post_id);
 			foreach ($categories as $category) {
 				$properties['category_' . $category->slug] = $category;
@@ -407,10 +407,10 @@ class Mapbox_Data_For_Wordpress_Admin {
 
 	public function mapbox_data_settings_menu() {
 		add_options_page( 
-			'Mapbox Data for WordPress', 
-			'Mapbox Data', 'manage_options', 
-			'mapbox-data-for-wordpress', 
-			array( $this, 'mapbox_data_settings_page' )
+			'Simple Mapbox Data', 
+			'Simple Mapbox Data', 'manage_options', 
+			'simple-mapbox-data', 
+			array( $this, 'simple_mapbox_data_settings_page' )
 		);
 	}
 
@@ -420,7 +420,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 *
 	 */
 
-	public function mapbox_data_settings_page() {
+	public function simple_mapbox_data_settings_page() {
 		if( !current_user_can( 'manage_options' ) ) {
 			wp_die( 'You do not have sufficient permissions to access this page.' );
 		}
@@ -430,8 +430,8 @@ class Mapbox_Data_For_Wordpress_Admin {
 
 		//Write to the database
 
-		if( isset( $_POST['mdfw_mapbox_info_form_submitted'] ) ) {
-			$hidden_field = esc_html( $_POST['mdfw_mapbox_info_form_submitted'] );
+		if( isset( $_POST['smd_mapbox_info_form_submitted'] ) ) {
+			$hidden_field = esc_html( $_POST['smd_mapbox_info_form_submitted'] );
 			if ( $hidden_field == 'Y' ) {
 				$mapbox_account_username = sanitize_text_field( $_POST['mapbox_account_username'] );
 				$options['mapbox_account_username']	= $mapbox_account_username;
@@ -441,13 +441,13 @@ class Mapbox_Data_For_Wordpress_Admin {
 				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
 				$mapbox_tileset_id = sanitize_text_field( $_POST['mapbox_tileset_id'] );
 				$options['mapbox_tileset_id']	= $mapbox_tileset_id;
-				$mdfw_send_categories = $_POST['mdfw_send_categories'];
-				$options['mdfw_send_categories']	= $mdfw_send_categories;
-				$mdfw_send_tags = $_POST['mdfw_send_tags'];
-				$options['mdfw_send_tags']	= $mdfw_send_tags;
+				$smd_send_categories = $_POST['smd_send_categories'];
+				$options['smd_send_categories']	= $smd_send_categories;
+				$smd_send_tags = $_POST['smd_send_tags'];
+				$options['smd_send_tags']	= $smd_send_tags;
 				$custom_fields = array();
 				for ( $i = 0; $i < $number_fields; $i++ ) { 
-					$field_name = 'mdfw_custom_field_' . $i;
+					$field_name = 'smd_custom_field_' . $i;
 					$field_type = $field_name . '_type';
 					$field_json = $field_name . '_json';
 
@@ -483,10 +483,10 @@ class Mapbox_Data_For_Wordpress_Admin {
 			$mapbox_access_token = $options[ 'mapbox_access_token' ];
 			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
 			$mapbox_tileset_id = $options[ 'mapbox_tileset_id' ];
-			$mdfw_send_categories = $options[ 'mdfw_send_categories' ];
-			$mdfw_send_tags = $options[ 'mdfw_send_tags' ];
+			$smd_send_categories = $options[ 'smd_send_categories' ];
+			$smd_send_tags = $options[ 'smd_send_tags' ];
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
-				$field_name = 'mdfw_custom_field_' . $i;
+				$field_name = 'smd_custom_field_' . $i;
 				$field_type = $field_name . '_type';
 				$field_json = $field_name . '_json';
 				if ( isset( $options[ $field_name ] ) ) {
@@ -502,7 +502,7 @@ class Mapbox_Data_For_Wordpress_Admin {
 			$last_updated = $options[ 'last_updated' ];
 		}
 
-		require( 'partials/mapbox-data-for-wordpress-options-display.php' );
+		require( 'partials/simple-mapbox-data-options-display.php' );
 	}
 
 	/**

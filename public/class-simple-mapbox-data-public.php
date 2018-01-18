@@ -9,11 +9,11 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/public
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/public
  * @author     Raquel Smith <raquel@raquelmsmith.com>
  */
-class Mapbox_Data_For_Wordpress_Public {
+class Simple_Mapbox_Data_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -54,7 +54,7 @@ class Mapbox_Data_For_Wordpress_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/mapbox-data-for-wordpress-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/simple-mapbox-data-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -65,7 +65,7 @@ class Mapbox_Data_For_Wordpress_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/mapbox-data-for-wordpress-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/simple-mapbox-data-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

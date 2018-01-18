@@ -12,7 +12,7 @@ Manage your Mapbox features from within your WordPress installation.
 
 == Description ==
 
-Create and manage map data points in WordPress and let Mapbox Data for WordPress pass that data to your Mapbox dataset. Define any number of custom properties and decide whether that information should live within WordPress only or be sent over to Mapbox. 
+Create and manage map data points in WordPress and let Simple Mapbox Data pass that data to your Mapbox dataset. Define any number of custom properties and decide whether that information should live within WordPress only or be sent over to Mapbox. 
 
 == Installation ==
 
