@@ -9,8 +9,8 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  * @author     Raquel Smith <raquel@raquelmsmith.com>
  */
-class Mapbox_Data_For_Wordpress_i18n {
+class Simple_Mapbox_Data_i18n {
 
 
 	/**
@@ -35,7 +35,7 @@ class Mapbox_Data_For_Wordpress_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'mapbox-data-for-wordpress',
+			'simple-mapbox-data',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

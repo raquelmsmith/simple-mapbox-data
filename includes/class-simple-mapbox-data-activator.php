@@ -6,8 +6,8 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  * @author     Raquel Smith <raquel@raquelmsmith.com>
  */
-class Mapbox_Data_For_Wordpress_Activator {
+class Simple_Mapbox_Data_Activator {
 
 	/**
 	 * Short Description. (use period)

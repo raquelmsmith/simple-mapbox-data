@@ -6,8 +6,8 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/includes
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/includes
  * @author     Raquel Smith <raquel@raquelmsmith.com>
  */
-class Mapbox_Data_For_Wordpress_Loader {
+class Simple_Mapbox_Data_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

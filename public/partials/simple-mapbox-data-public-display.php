@@ -8,8 +8,8 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
- * @subpackage Mapbox_Data_For_Wordpress/public/partials
+ * @package    Simple_Mapbox_Data
+ * @subpackage Simple_Mapbox_Data/public/partials
  */
 ?>
 

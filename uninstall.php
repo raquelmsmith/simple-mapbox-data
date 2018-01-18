@@ -6,7 +6,7 @@
  * @link       raquelmsmith.com
  * @since      1.0.0
  *
- * @package    Mapbox_Data_For_Wordpress
+ * @package    Simple_Mapbox_Data
  */
 
 // If uninstall not called from WordPress, then exit.
