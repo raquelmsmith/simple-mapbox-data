@@ -95,20 +95,20 @@ class Mapbox_Data_For_Wordpress_Admin {
 	 */
 	public function register_map_data_post_type() {
 		$labels = array(
-			'name'					=> _x( 'Map Data', 'post type general name', 'your-plugin-textdomain' ),
-			'singular_name'			=> _x( 'Map Data Point', 'post type singular name', 'your-plugin-textdomain' ),
-			'menu_name'				=> _x( 'Map Data', 'admin menu', 'your-plugin-textdomain' ),
-			'name_admin_bar'		=> _x( 'Map Data Point', 'add new on admin bar', 'your-plugin-textdomain' ),
-			'add_new'				=> _x( 'Add New', 'data point', 'your-plugin-textdomain' ),
-			'add_new_item'			=> __( 'Add New Data Point', 'your-plugin-textdomain' ),
-			'new_item'				=> __( 'New Data Point', 'your-plugin-textdomain' ),
-			'edit_item'				=> __( 'Edit Data Point', 'your-plugin-textdomain' ),
-			'view_item'				=> __( 'View Data Point', 'your-plugin-textdomain' ),
-			'all_items'				=> __( 'All Map Data Points', 'your-plugin-textdomain' ),
-			'search_items'			=> __( 'Search Map Data Points', 'your-plugin-textdomain' ),
-			'parent_item_colon'		=> __( 'Parent Map Data Points:', 'your-plugin-textdomain' ),
-			'not_found'				=> __( 'No Map Data Points found.', 'your-plugin-textdomain' ),
-			'not_found_in_trash'	=> __( 'No Map Data Points found in Trash.', 'your-plugin-textdomain' )
+			'name'					=> _x( 'Map Data', 'post type general name', 'mapbox-data-for-wordpress' ),
+			'singular_name'			=> _x( 'Map Data Point', 'post type singular name', 'mapbox-data-for-wordpress' ),
+			'menu_name'				=> _x( 'Map Data', 'admin menu', 'mapbox-data-for-wordpress' ),
+			'name_admin_bar'		=> _x( 'Map Data Point', 'add new on admin bar', 'mapbox-data-for-wordpress' ),
+			'add_new'				=> _x( 'Add New', 'data point', 'mapbox-data-for-wordpress' ),
+			'add_new_item'			=> __( 'Add New Data Point', 'mapbox-data-for-wordpress' ),
+			'new_item'				=> __( 'New Data Point', 'mapbox-data-for-wordpress' ),
+			'edit_item'				=> __( 'Edit Data Point', 'mapbox-data-for-wordpress' ),
+			'view_item'				=> __( 'View Data Point', 'mapbox-data-for-wordpress' ),
+			'all_items'				=> __( 'All Map Data Points', 'mapbox-data-for-wordpress' ),
+			'search_items'			=> __( 'Search Map Data Points', 'mapbox-data-for-wordpress' ),
+			'parent_item_colon'		=> __( 'Parent Map Data Points:', 'mapbox-data-for-wordpress' ),
+			'not_found'				=> __( 'No Map Data Points found.', 'mapbox-data-for-wordpress' ),
+			'not_found_in_trash'	=> __( 'No Map Data Points found in Trash.', 'mapbox-data-for-wordpress' )
 		);
 		$args = array(
 			'labels'				=> $labels,
@@ -206,21 +206,22 @@ class Mapbox_Data_For_Wordpress_Admin {
 	public function save_meta_boxes_data( $post_id ){
 		$custom_meta_fields = self::create_custom_meta_fields_array();
 		// Verify nonce before saving
-		if ( !isset( $_POST['map_data_point_meta_box_nonce'] ) || !wp_verify_nonce( $_POST['map_data_point_meta_box_nonce'], 'map_data_point_meta_box_nonce_value' ) ){
+		if ( !isset( $_POST[ 'map_data_point_meta_box_nonce' ] ) || !wp_verify_nonce( $_POST[ 'map_data_point_meta_box_nonce' ], 'map_data_point_meta_box_nonce_value' ) ) {
 			return $post_id;
 		}
 		// check autosave
-	    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+	    if (defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 	        return $post_id;
+	    }
 		// Check the user's permissions.
 		if ( ! current_user_can( 'edit_post', $post_id ) ){
 			return $post_id;
 		}
 		// loop through fields and save the data
-	    foreach ($custom_meta_fields as $field) {
+	    foreach ( $custom_meta_fields as $field ) {
 	    	$fieldID = strtolower( preg_replace( "/\s/", "_", $field[ 'id' ] ) );
-	        $old = get_post_meta($post_id, '_' . $fieldID, true);
-	        $new = $_POST[$fieldID];
+	        $old = get_post_meta( $post_id, '_' . $fieldID, true );
+	        $new = sanitize_text_field( $_POST[ $fieldID ] );
 	        if ($new && $new != $old) {
 	            update_post_meta($post_id, '_' . $fieldID, $new);
 	        } elseif ('' == $new && $old) {
