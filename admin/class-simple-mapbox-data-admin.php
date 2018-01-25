@@ -300,14 +300,18 @@ class Simple_Mapbox_Data_Admin {
 		$properties = array_merge( $properties, $post_array );
 		if ( $this->smd_send_tags ) {
 			$tags = get_the_tags( $post_id );
+			$properties['all_tags'] = array();
 			foreach ($tags as $tag) {
 				$properties['tag_' . $tag->slug] = $tag;
+				$properties['all_tags'][] = $tag->slug;
 			}
 		}
 		if ( $this->smd_send_categories ) {
 			$categories = get_the_category($post_id);
+			$properties['all_categories'] = array();
 			foreach ($categories as $category) {
 				$properties['category_' . $category->slug] = $category;
+				$properties['all_categories'][] = $category->slug;
 			}
 
 		}
