@@ -71,22 +71,7 @@
 											<input type="text" name="mapbox_tileset_id" value="<?php esc_attr_e( $mapbox_tileset_id ); ?>" class="regular-text" />
 										</td>
 									</tr>
-									<tr>
-										<td scope="row">
-											<label for="tablecell"><?php esc_html_e('Send Categories', 'simple-mapbox-data'); ?></label>
-										</td>
-										<td>
-											<input type="checkbox" name="smd_send_categories" value="1" <?php checked( $smd_send_categories, '1', TRUE ); ?> />
-										</td>
-									</tr>
-									<tr>
-										<td scope="row">
-											<label for="tablecell"><?php esc_html_e('Send Tags', 'simple-mapbox-data'); ?></label>
-										</td>
-										<td>
-											<input type="checkbox" name="smd_send_tags" value="1" <?php checked( $smd_send_tags, '1', TRUE ); ?> />
-										</td>
-									</tr>
+									
 								</table>
 
 								<h2><?php esc_html_e( 'Custom Fields', 'simple-mapbox-data' ); ?></h2>

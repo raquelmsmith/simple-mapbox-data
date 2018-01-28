@@ -48,8 +48,6 @@ class Simple_Mapbox_Data_Admin {
 	 * @var      bool    $options    The options for the mapbox data plugin.
 	 */
 	private $options;
-	private $smd_send_categories;
-	private $smd_send_tags;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -64,8 +62,6 @@ class Simple_Mapbox_Data_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->options = $options;
-		$this->smd_send_tags = $this->options['smd_send_tags'];
-		$this->smd_send_categories = $this->options['smd_send_categories'];
 
 	}
 
@@ -298,22 +294,19 @@ class Simple_Mapbox_Data_Admin {
 		$properties = array();
 		$post_array = (array) $post_object;
 		$properties = array_merge( $properties, $post_array );
-		if ( $this->smd_send_tags ) {
-			$tags = get_the_tags( $post_id );
-			$properties['all_tags'] = array();
-			foreach ($tags as $tag) {
-				$properties['tag_' . $tag->slug] = $tag;
-				$properties['all_tags'][] = $tag->slug;
-			}
+		/* Get and send the tags */
+		$tags = get_the_tags( $post_id );
+		$properties['all_tags'] = array();
+		foreach ($tags as $tag) {
+			$properties['tag_' . $tag->slug] = $tag;
+			$properties['all_tags'][] = $tag->slug;
 		}
-		if ( $this->smd_send_categories ) {
-			$categories = get_the_category($post_id);
-			$properties['all_categories'] = array();
-			foreach ($categories as $category) {
-				$properties['category_' . $category->slug] = $category;
-				$properties['all_categories'][] = $category->slug;
-			}
-
+		/* Get and send the categories */
+		$categories = get_the_category($post_id);
+		$properties['all_categories'] = array();
+		foreach ($categories as $category) {
+			$properties['category_' . $category->slug] = $category;
+			$properties['all_categories'][] = $category->slug;
 		}
 		$custom_fields = $this->get_custom_fields_data( $post_id );
 		if ( $custom_fields ) {
@@ -445,10 +438,6 @@ class Simple_Mapbox_Data_Admin {
 				$options['mapbox_dataset_id']	= $mapbox_dataset_id;
 				$mapbox_tileset_id = sanitize_text_field( $_POST['mapbox_tileset_id'] );
 				$options['mapbox_tileset_id']	= $mapbox_tileset_id;
-				$smd_send_categories = $_POST['smd_send_categories'];
-				$options['smd_send_categories']	= $smd_send_categories;
-				$smd_send_tags = $_POST['smd_send_tags'];
-				$options['smd_send_tags']	= $smd_send_tags;
 				$custom_fields = array();
 				for ( $i = 0; $i < $number_fields; $i++ ) { 
 					$field_name = 'smd_custom_field_' . $i;
@@ -487,8 +476,6 @@ class Simple_Mapbox_Data_Admin {
 			$mapbox_access_token = $options[ 'mapbox_access_token' ];
 			$mapbox_dataset_id = $options[ 'mapbox_dataset_id' ];
 			$mapbox_tileset_id = $options[ 'mapbox_tileset_id' ];
-			$smd_send_categories = $options[ 'smd_send_categories' ];
-			$smd_send_tags = $options[ 'smd_send_tags' ];
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
 				$field_name = 'smd_custom_field_' . $i;
 				$field_type = $field_name . '_type';
