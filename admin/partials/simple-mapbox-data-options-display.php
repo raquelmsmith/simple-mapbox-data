@@ -97,7 +97,6 @@
 												<option <?php if ( $$field_type == 'text' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="text">Text</option>
 												<option <?php if ( $$field_type == 'textarea' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="textarea">Textarea</option>
 												<option <?php if ( $$field_type == 'checkbox' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="checkbox">Checkbox</option>
-												<option <?php if ( $$field_type == 'radio' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="radio">Radio</option>
 											</select>
 										</td>
 									</tr>

@@ -49,17 +49,6 @@
 				    echo '<input type="checkbox" name="' . esc_attr( $field_id ) . '" id="' . esc_attr( $field_id ) .'" ',$meta ? ' checked="checked"' : '','/>
 				        <label for="' . esc_attr( $field_id ) . '">' . esc_html( $field['desc'] ) . '</label>';
 					break;
-				// select
-				case 'select':
-				    echo '<select name="' . esc_attr( $field_id ) . '" id="' . esc_attr( $field_id ) . '">';
-				    foreach ($field['options'] as $option) {
-				        echo '<option', $meta == $option['value'] ? ' selected="selected"' : '', ' value="' . $option['value'] . '">' . $option['label'] . '</option>';
-				    }
-				    echo '</select><br />';
-				        if ( isset( $field['desc'] ) ) {
-				        	echo '<span class="description">' . esc_html( $field['desc'] ) . '</span>';
-				        }
-					break;
                 } //end switch ?>
         	</td>
         </tr>
