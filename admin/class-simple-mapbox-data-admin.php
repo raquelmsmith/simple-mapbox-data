@@ -188,7 +188,6 @@ class Simple_Mapbox_Data_Admin {
 				'label' => $field['name'],
 				'id'	=> $prefix . strtolower( $field['name'] ),
 				'type'	=> $field['type'],
-				'json'	=> $field['json']
 			);
 		}
 		return $custom_meta_fields;
@@ -238,8 +237,7 @@ class Simple_Mapbox_Data_Admin {
 		for ( $i = 0; $i < $number_fields; $i++ ) { 
 			$field_name = 'smd_custom_field_' . $i;
 			$field_type = $field_name . '_type';
-			$field_json = $field_name . '_json';
-			if ( isset( $this->options[ $field_name ] ) &&  $this->options[ $field_json ] ) {
+			if ( isset( $this->options[ $field_name ] ) ) {
 				$$field_name = strtolower( $this->options[ $field_name ] );
 				$custom_fields["custom_field_" . $$field_name] = $post_meta_data[ '_mapbox_custom_data_' . $$field_name][0];
 			}
@@ -442,21 +440,17 @@ class Simple_Mapbox_Data_Admin {
 				for ( $i = 0; $i < $number_fields; $i++ ) { 
 					$field_name = 'smd_custom_field_' . $i;
 					$field_type = $field_name . '_type';
-					$field_json = $field_name . '_json';
 
 					if( '' != $_POST[$field_name] ) {
 						$$field_name = sanitize_text_field( $_POST[$field_name] );
 						$options[$field_name]	= $$field_name;
 						$$field_type = sanitize_text_field( $_POST[$field_type] );
 						$options[$field_type]	= $$field_type;
-						$$field_json = sanitize_text_field( $_POST[$field_json] );
-						$options[$field_json]	= $$field_json;
 
 						//Save to custom fields array
 						$custom_fields[] = array(
 							'name'	=> $$field_name,
 					        'type'  => $$field_type,
-					        'json'	=> $$field_json,
 						);
 					}
 				}
@@ -479,15 +473,12 @@ class Simple_Mapbox_Data_Admin {
 			for ( $i = 0; $i < $number_fields; $i++ ) { 
 				$field_name = 'smd_custom_field_' . $i;
 				$field_type = $field_name . '_type';
-				$field_json = $field_name . '_json';
 				if ( isset( $options[ $field_name ] ) ) {
 					$$field_name = $options[ $field_name ];
 					$$field_type = $options[ $field_type ];
-					$$field_json = $options[ $field_json ];
 				} else {
 					$$field_name = '';
 					$$field_type = '';
-					$$field_json = '';
 				}
 			}
 			$last_updated = $options[ 'last_updated' ];

@@ -80,14 +80,12 @@
 									<tr>
 										<th class="row-title"><?php esc_html_e( 'Value Name', 'simple-mapbox-data' ); ?></th>
 										<th><?php esc_html_e( 'Value Type', 'simple-mapbox-data' ); ?></th>
-										<th><?php esc_html_e( 'Include in GeoJSON?', 'simple-mapbox-data' ); ?></th>
 									</tr>
 
 									<?php 
 									for ($i=0; $i < $number_fields; $i++) { 
 										$field_name = 'smd_custom_field_' . $i;
 										$field_type = $field_name . '_type';
-										$field_json = $field_name . '_json';
 										?>
 										<tr valign="top">
 
@@ -101,9 +99,6 @@
 												<option <?php if ( $$field_type == 'checkbox' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="checkbox">Checkbox</option>
 												<option <?php if ( $$field_type == 'radio' ) : ?> selected="<?php esc_attr_e( 'selected' ); ?>"<?php endif; ?> value="radio">Radio</option>
 											</select>
-										</td>
-										<td>
-											<input type="checkbox" value="1" name="smd_custom_field_<?php esc_attr_e( $i ); ?>_json" <?php checked( $$field_json, '1', TRUE ); ?> />
 										</td>
 									</tr>
 									<?php } ?>
