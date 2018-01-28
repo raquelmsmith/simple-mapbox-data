@@ -34,3 +34,25 @@
 	width: 10%;
 	text-align: center;
 }
+
+/* Settings page CSS */
+
+.docs {
+	margin-top: 0;
+}
+
+.docs a {
+	font-size: .8rem;
+	font-style: italic;
+	text-decoration: none;
+}
+
+#poststuff .inside h2 {
+	padding-left: 0;
+	padding-top: 30px;
+	font-weight: 600;
+}
+
+th.row-title {
+	padding-left: 10px;
+}

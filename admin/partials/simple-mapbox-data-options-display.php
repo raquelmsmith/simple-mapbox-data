@@ -11,12 +11,11 @@
  */
 ?>
 
-<h2><?php _e( 'Simple Mapbox Data', 'simple-mapbox-data' ); ?></h2>
-
 <div class="wrap">
 
-	<div id="icon-options-general" class="icon32"></div>
-	<h1><?php esc_attr_e( 'Settings', 'simple-mapbox-data' ); ?></h1>
+	<h1><?php esc_attr_e( 'Simple Mapbox Data Settings', 'simple-mapbox-data' ); ?></h1>
+
+	<p class="docs"><a href="<?php echo esc_url( 'https://raquelmsmith.com/blog/docs/simple-mapbox-data/' ); ?>" target="_blank"><?php esc_html_e( 'Documentation', 'simple-mapbox-data' ); ?></a></p>
 
 	<div id="poststuff">
 
@@ -29,7 +28,7 @@
 
 					<div class="postbox">
 
-						<h2><span><?php esc_html_e( 'Mapbox Info', 'simple-mapbox-data' ); ?></span></h2>
+						<h2><?php esc_html_e( 'Mapbox Info', 'simple-mapbox-data' ); ?></h2>
 
 						<div class="inside">
 							<p><?php esc_html_e(
@@ -79,7 +78,7 @@
 								<table class="form-table">
 									<tr>
 										<th class="row-title"><?php esc_html_e( 'Value Name', 'simple-mapbox-data' ); ?></th>
-										<th><?php esc_html_e( 'Value Type', 'simple-mapbox-data' ); ?></th>
+										<th class="row-title"><?php esc_html_e( 'Value Type', 'simple-mapbox-data' ); ?></th>
 									</tr>
 
 									<?php 
@@ -129,7 +128,7 @@
 
 				<div class="meta-box-sortables">
 
-					<div class="postbox">
+					<div class="postbox about">
 
 						<h2><span><?php esc_html_e(
 									'About Simple Mapbox Data', 'simple-mapbox-data'
