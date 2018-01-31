@@ -37,6 +37,7 @@
 								); ?></p>
 							<form name="smd_mapbox_info_form" method="post" action="">
 								<input type="hidden" name="smd_mapbox_info_form_submitted" value="Y">
+								<input type="hidden" name="smd_options_nonce" value="<?php esc_attr_e( wp_create_nonce('smd_options_nonce_value') ); ?>" />
 								<table class="form-table">
 									<tr>
 										<td scope="row">

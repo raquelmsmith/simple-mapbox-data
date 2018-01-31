@@ -426,6 +426,10 @@ class Simple_Mapbox_Data_Admin {
 		//Write to the database
 
 		if( isset( $_POST['smd_mapbox_info_form_submitted'] ) ) {
+			// Verify nonce before saving
+			if ( !isset( $_POST[ 'smd_options_nonce' ] ) || !wp_verify_nonce( $_POST[ 'smd_options_nonce' ], 'smd_options_nonce_value' ) ) {
+				wp_die( 'The settings could not be saved.' );
+			}
 			$hidden_field = esc_html( $_POST['smd_mapbox_info_form_submitted'] );
 			if ( $hidden_field == 'Y' ) {
 				$mapbox_account_username = sanitize_text_field( $_POST['mapbox_account_username'] );
