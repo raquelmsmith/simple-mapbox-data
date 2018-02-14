@@ -160,11 +160,11 @@ class Simple_Mapbox_Data {
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_box' );
 		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'save_meta_boxes_data' );
 		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'send_data_to_mapbox' );
-		$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'update_tileset' );
+		//$this->loader->add_action( 'publish_map_data_point', $plugin_admin, 'update_tileset' );
 		$this->loader->add_action( 'untrash_post', $plugin_admin, 'send_data_to_mapbox' );
-		$this->loader->add_action( 'untrash_post', $plugin_admin, 'update_tileset' );
+		//$this->loader->add_action( 'untrash_post', $plugin_admin, 'update_tileset' );
 		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'delete_data_from_mapbox' );
-		$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'update_tileset' );
+		//$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'update_tileset' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'mapbox_data_settings_menu' );
 		$this->loader->add_action( 'wp_ajax_get_all_data_points', $plugin_admin, 'get_all_data_points' );
 		$this->loader->add_action( 'wp_ajax_get_id_send_data', $plugin_admin, 'get_id_send_data' );
