@@ -341,8 +341,10 @@ class Simple_Mapbox_Data_Admin {
 	 *
 	 */
 
-	public function delete_data_from_mapbox( $post_id ) {
-		$post = get_post( $post_id );
+	public function delete_data_from_mapbox( $post ) {
+		if ( !is_object( $post ) ) {
+			$post = get_post( $post );
+		}
 		if ( $post->post_type != 'map_data_point' ) {
 			return;
 		}
